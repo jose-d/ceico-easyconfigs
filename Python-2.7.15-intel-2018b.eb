@@ -36,22 +36,22 @@ exts_list = [
     ('setuptools', '40.6.2', {
         'source_tmpl': '%(name)s-%(version)s.zip',
         'source_urls': ['https://pypi.python.org/packages/source/s/setuptools/'],
-        'checksums': ['f7cddbb5f5c640311eb00eab6e849f7701fa70bf6a183fc8a2c33dd1d1672fb2'],
+        'checksums': ['86bb4d8e1b0fabad1f4642b64c335b673e53e7a381de03c9a89fe678152c4c64'],
     }),
     ('pip', '18.1', {
         'source_urls': ['https://pypi.python.org/packages/source/p/pip/'],
-        'checksums': ['f2bd08e0cd1b06e10218feaf6fef299f473ba706582eb3bd9d52203fdbd7ee68'],
+        'checksums': ['c0a292bd977ef590379a3f05d7b7f65135487b67470f6281289a94e015650ea1'],
     }),
     ('nose', '1.3.7', {
         'source_urls': ['https://pypi.python.org/packages/source/n/nose/'],
         'checksums': ['f1bffef9cbc82628f6e7d7b40d7e255aefaa1adb6a1b1d26c69a8b79e6208a98'],
     }),
-    ('numpy', '1.14.5', {
+    ('numpy', '1.15.4', {
         'patches': ['numpy-1.12.0-mkl.patch'],
         'source_tmpl': '%(name)s-%(version)s.zip',
         'source_urls': ['https://pypi.python.org/packages/source/n/numpy/'],
         'checksums': [
-            'a4a433b3a264dbc9aa9c7c241e87c0358a503ea6394f8737df1683c7c9a102ac',  # numpy-1.14.5.zip
+            '3d734559db35aa3697dadcea492a423118c5c55d176da2f3be9c98d4803fc2a7',  # numpy-1.14.5.zip
             'f212296ed289eb1b4e3f703997499dee8a2cdd0af78b55e017477487b6377ca4',  # numpy-1.12.0-mkl.patch
         ],
     }),
@@ -73,11 +73,11 @@ exts_list = [
     }),
     ('pbr', '5.1.1', {
         'source_urls': ['https://pypi.python.org/packages/source/p/pbr/'],
-        'checksums': ['a9c27eb8f0e24e786e544b2dbaedb729c9d8546342b5a6818d8eda098ad4340d'],
+        'checksums': ['f59d71442f9ece3dffc17bc36575768e1ee9967756e6b6535f0ee1f0054c3d68'],
     }),
     ('Cython', '0.29.1', {
         'source_urls': ['https://pypi.python.org/packages/source/C/Cython/'],
-        'checksums': ['1aae6d6e9858888144cea147eb5e677830f45faaff3d305d77378c3cba55f526'],
+        'checksums': ['18ab7646985a97e02cee72e1ddba2e732d4931d4e1732494ff30c5aa084bfb97'],
     }),
     ('six', '1.11.0', {
         'source_urls': ['https://pypi.python.org/packages/source/s/six/'],
@@ -86,7 +86,7 @@ exts_list = [
     ('python-dateutil', '2.7.5', {
         'modulename': 'dateutil',
         'source_urls': ['https://pypi.python.org/packages/source/p/python-dateutil/'],
-        'checksums': ['e27001de32f627c22380a688bcc43ce83504a7bc5da472209b4c70f02829f0b8'],
+        'checksums': ['88f9287c0174266bb0d8cedd395cfba9c58e87e5ad86b2ce58859bc11be3cf02'],
     }),
     ('deap', '1.2.2', {
         'source_urls': ['https://pypi.python.org/packages/source/d/deap/'],
@@ -96,10 +96,10 @@ exts_list = [
         'source_urls': ['https://pypi.python.org/packages/source/d/decorator/'],
         'checksums': ['c39efa13fbdeb4506c476c9b3babf6a718da943dab7811c206005a4a956c080c'],
     }),
-    ('liac-arff', '2.2.2', {
+    ('liac-arff', '2.3.1', {
         'modulename': 'arff',
         'source_urls': ['https://pypi.python.org/packages/source/l/liac-arff/'],
-        'checksums': ['f4b60475e7473c4c42665f106ef87fe94fbf1e4cac7571903153ad38c3167c69'],
+        'checksums': ['fa7aa8e9710d5906e5bab523e332aa1e40c6d2f6e453647c0e000c9b271497f4'],
     }),
     ('pycrypto', '2.6.1', {
         'modulename': 'Crypto',
@@ -127,38 +127,38 @@ exts_list = [
         'source_urls': ['https://pypi.python.org/packages/source/i/idna/'],
         'checksums': ['684a38a6f903c1d71d6d5fac066b58d7768af4de2b832e426ec79c30daa94a16'],
     }),
-    ('cryptography', '2.2.2', {
+    ('cryptography', '2.4.2', {
         'source_urls': ['https://pypi.python.org/packages/source/c/cryptography/'],
-        'checksums': ['9fc295bf69130a342e7a19a39d7bbeb15c0bcaabc7382ec33ef3b2b7d18d2f63'],
+        'checksums': ['05a6052c6a9f17ff78ba78f8e6eb1d777d25db3b763343a1ae89a7a8670386dd'],
     }),
-    ('pyasn1', '0.4.3', {
+    ('pyasn1', '0.4.4', {
         'source_urls': ['https://pypi.python.org/packages/source/p/pyasn1/'],
-        'checksums': ['fb81622d8f3509f0026b0683fe90fea27be7284d3826a5f2edf97f69151ab0fc'],
+        'checksums': ['f58f2a3d12fd754aa123e9fa74fb7345333000a035f3921dbdaa08597aa53137'],
     }),
-    ('pycparser', '2.18', {
+    ('pycparser', '2.19', {
         'source_urls': ['https://pypi.python.org/packages/source/p/pycparser/'],
-        'checksums': ['99a8ca03e29851d96616ad0404b4aad7d9ee16f25c9f9708a11faf2810f7b226'],
+        'checksums': ['a988718abfad80b6b157acce7bf130a30876d27603738ac39f140993246b25b3'],
     }),
     ('cffi', '1.11.5', {
         'source_urls': ['https://pypi.python.org/packages/source/c/cffi/'],
         'checksums': ['e90f17980e6ab0f3c2f3730e56d1fe9bcba1891eeea58966e89d352492cc74f4'],
     }),
-    ('PyNaCl', '1.2.1', {
+    ('PyNaCl', '1.3.0', {
         'modulename': 'nacl',
         'source_urls': ['https://pypi.python.org/packages/source/p/pynacl/'],
-        'checksums': ['e0d38fa0a75f65f556fb912f2c6790d1fa29b7dd27a1d9cc5591b281321eaaa9'],
+        'checksums': ['0c6100edd16fefd1557da078c7a31e7b7d7a52ce39fdca2bec29d4f7b6e7600c'],
     }),
     ('bcrypt', '3.1.4', {
         'source_urls': ['https://pypi.python.org/packages/source/b/bcrypt/'],
         'checksums': ['67ed1a374c9155ec0840214ce804616de49c3df9c5bc66740687c1c9b1cd9e8d'],
     }),
-    ('paramiko', '2.4.1', {
+    ('paramiko', '2.4.2', {
         'source_urls': ['https://pypi.python.org/packages/source/p/paramiko/'],
-        'checksums': ['33e36775a6c71790ba7692a73f948b329cf9295a72b0102144b031114bd2a4f3'],
+        'checksums': ['a8975a7df3560c9f1e2b43dc54ebd40fd00a7017392ca5445ce7df409f900fcb'],
     }),
-    ('pyparsing', '2.2.0', {
+    ('pyparsing', '2.3.0', {
         'source_urls': ['https://pypi.python.org/packages/source/p/pyparsing/'],
-        'checksums': ['0832bcf47acd283788593e7a0f542407bd9550a55a8a8435214a1960e04bcb04'],
+        'checksums': ['f353aab21fd474459d97b709e527b5571314ee5f067441dc9f88e33eecd96592'],
     }),
     ('netifaces', '0.10.7', {
         'source_urls': ['https://pypi.python.org/packages/source/n/netifaces/'],
@@ -176,57 +176,57 @@ exts_list = [
         'source_urls': ['https://pypi.python.org/packages/source/m/mock/'],
         'checksums': ['b158b6df76edd239b8208d481dc46b6afd45a846b7812ff0ce58971cf5bc8bba'],
     }),
-    ('pytz', '2018.4', {
+    ('pytz', '2018.7', {
         'source_urls': ['https://pypi.python.org/packages/source/p/pytz/'],
-        'checksums': ['c06425302f2cf668f1bba7a0a03f3c1d34d4ebeef2c72003da308b3947c7f749'],
+        'checksums': ['31cb35c89bd7d333cd32c5f278fca91b523b0834369e757f4c5641ea252236ca'],
     }),
-    ('pandas', '0.23.1', {
+    ('pandas', '0.23.4', {
         'source_urls': ['https://pypi.python.org/packages/source/p/pandas/'],
-        'checksums': ['50b52af2af2e15f4aeb2fe196da073a8c131fa02e433e105d95ce40016df5690'],
+        'checksums': ['5b24ca47acf69222e82530e89111dd9d14f9b970ab2cd3a1c2c78f0c4fbba4f4'],
     }),
     ('bitstring', '3.1.5', {
         'source_tmpl': '%(name)s-%(version)s.zip',
         'source_urls': ['https://pypi.python.org/packages/source/b/bitstring/'],
         'checksums': ['c163a86fcef377c314690051885d86b47419e3e1770990c212e16723c1c08faa'],
     }),
-    ('virtualenv', '16.0.0', {
+    ('virtualenv', '16.1.0', {
         'source_urls': ['https://pypi.python.org/packages/source/v/virtualenv/'],
-        'checksums': ['ca07b4c0b54e14a91af9f34d0919790b016923d157afda5efdde55c96718f752'],
+        'checksums': ['f899fafcd92e1150f40c8215328be38ff24b519cd95357fa6e78e006c7638208'],
     }),
     ('docopt', '0.6.2', {
         'source_urls': ['https://pypi.python.org/packages/source/d/docopt/'],
         'checksums': ['49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491'],
     }),
-    ('joblib', '0.11', {
+    ('joblib', '0.13.0', {
         'source_urls': ['https://pypi.python.org/packages/source/j/joblib/'],
-        'checksums': ['7b8fd56df36d9731a83729395ccb85a3b401f62a96255deb1a77220c00ed4085'],
+        'checksums': ['651fdd4888cdefa39f65c942e33ba1a610d395acd9c1d787adbda1a6beb22218'],
     }),
     ('chardet', '3.0.4', {
         'source_urls': ['https://pypi.python.org/packages/source/c/chardet/'],
         'checksums': ['84ab92ed1c4d4f16916e05906b6b75a6c0fb5db821cc65e70cbd64a3e2a5eaae'],
     }),
-    ('certifi', '2018.4.16', {
+    ('certifi', '2018.11.29', {
         'source_urls': ['https://pypi.python.org/packages/source/c/certifi/'],
-        'checksums': ['13e698f54293db9f89122b0581843a782ad0934a4fe0172d2a980ba77fc61bb7'],
+        'checksums': ['47f9c83ef4c0c621eaef743f133f09fa8a74a9b75f037e8624f83bd1b6626cb7'],
     }),
-    ('urllib3', '1.23', {
+    ('urllib3', '1.24.1', {
         'source_urls': ['https://pypi.python.org/packages/source/u/urllib3/'],
-        'checksums': ['a68ac5e15e76e7e5dd2b8f94007233e01effe3e50e8daddf69acfd81cb686baf'],
+        'checksums': ['de9529817c93f27c8ccbfead6985011db27bd0ddfcdb2d86f3f663385c6a9c22'],
     }),
-    ('requests', '2.19.1', {
+    ('requests', '2.20.1', {
         'source_urls': ['https://pypi.python.org/packages/source/r/requests/'],
-        'checksums': ['ec22d826a36ed72a7358ff3fe56cbd4ba69dd7a6718ffd450ff0e9df7a47ce6a'],
+        'checksums': ['ea881206e59f41dbd0bd445437d792e43906703fff75ca8ff43ccdb11f33f263'],
     }),
     ('xlrd', '1.1.0', {
-        'source_urls': ['https://pypi.python.org/packages/source/x/xlrd'],
+        'source_urls': ['https://pypi.python.org/packages/source/x/xlrd/'],
         'checksums': ['8a21885513e6d915fe33a8ee5fdfa675433b61405ba13e2a69e62ee36828d7e2'],
     }),
-    ('py_expression_eval', '0.3.4', {
-        'source_urls': ['https://pypi.python.org/packages/source/p/py_expression_eval'],
-        'checksums': ['b9662c58f8835f6fa3380990f870429fe1176008718a47ce054a7867c4091ad8'],
+    ('py_expression_eval', '0.3.5', {
+        'source_urls': ['https://pypi.python.org/packages/source/p/py_expression_eval/'],
+        'checksums': ['a405dff69ac96a0bd29f087605e5fc379ef50e99bdcd543f384d76ac4897bed1'],
     }),
     ('pyfits', '3.5', {
-        'source_urls': ['https://files.pythonhosted.org/packages/source/p/pyfits'],
+        'source_urls': ['https://files.pythonhosted.org/packages/source/p/pyfits/'],
         'checksums': ['4e668622d5a3c140590bc6cf8222afcd4d133dde3d6beda3b9c3c9539c5acf18'],
     }),
 ]
