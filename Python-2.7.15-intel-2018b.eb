@@ -33,12 +33,12 @@ exts_download_dep_fail = True
 # order is important!
 # package versions updated June 19th 2018
 exts_list = [
-    ('setuptools', '39.2.0', {
+    ('setuptools', '40.6.2', {
         'source_tmpl': '%(name)s-%(version)s.zip',
         'source_urls': ['https://pypi.python.org/packages/source/s/setuptools/'],
         'checksums': ['f7cddbb5f5c640311eb00eab6e849f7701fa70bf6a183fc8a2c33dd1d1672fb2'],
     }),
-    ('pip', '10.0.1', {
+    ('pip', '18.1', {
         'source_urls': ['https://pypi.python.org/packages/source/p/pip/'],
         'checksums': ['f2bd08e0cd1b06e10218feaf6fef299f473ba706582eb3bd9d52203fdbd7ee68'],
     }),
@@ -71,11 +71,11 @@ exts_list = [
         'source_urls': ['https://pypi.python.org/packages/source/p/paycheck/'],
         'checksums': ['6db7fc367c146cd59d2327ad4d2d6b0a24bc1be2d6953bb0773cbf702ee1ed34'],
     }),
-    ('pbr', '4.0.4', {
+    ('pbr', '5.1.1', {
         'source_urls': ['https://pypi.python.org/packages/source/p/pbr/'],
         'checksums': ['a9c27eb8f0e24e786e544b2dbaedb729c9d8546342b5a6818d8eda098ad4340d'],
     }),
-    ('Cython', '0.28.3', {
+    ('Cython', '0.29.1', {
         'source_urls': ['https://pypi.python.org/packages/source/C/Cython/'],
         'checksums': ['1aae6d6e9858888144cea147eb5e677830f45faaff3d305d77378c3cba55f526'],
     }),
@@ -83,7 +83,7 @@ exts_list = [
         'source_urls': ['https://pypi.python.org/packages/source/s/six/'],
         'checksums': ['70e8a77beed4562e7f14fe23a786b54f6296e34344c23bc42f07b15018ff98e9'],
     }),
-    ('python-dateutil', '2.7.3', {
+    ('python-dateutil', '2.7.5', {
         'modulename': 'dateutil',
         'source_urls': ['https://pypi.python.org/packages/source/p/python-dateutil/'],
         'checksums': ['e27001de32f627c22380a688bcc43ce83504a7bc5da472209b4c70f02829f0b8'],
@@ -224,6 +224,10 @@ exts_list = [
     ('py_expression_eval', '0.3.4', {
         'source_urls': ['https://pypi.python.org/packages/source/p/py_expression_eval'],
         'checksums': ['b9662c58f8835f6fa3380990f870429fe1176008718a47ce054a7867c4091ad8'],
+    }),
+    ('pyfits', '3.5', {
+        'source_urls': ['https://files.pythonhosted.org/packages/source/p/pyfits'],
+        'checksums': ['4e668622d5a3c140590bc6cf8222afcd4d133dde3d6beda3b9c3c9539c5acf18'],
     }),
 ]
 
