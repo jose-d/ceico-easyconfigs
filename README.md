@@ -4,10 +4,9 @@ Easyconfigs usually with patches related to ceico HPC systems requirements.
 ## modules - WIP
 
 ### lib/plc-2.0-intel2018b-Python-2.7.15.eb
-* plack likelihood code
-* http://pla.esac.esa.int/pla/aio
+* plack likelihood code, http://pla.esac.esa.int/pla/aio
 * TODO before upstream merge attempt:
- * pyfits Python module
+ * pyfits Python module (and define it as dependency)
  * (hidden?) module for shared data
 
 ### lang/Python/2.7.15-intel-2018b
