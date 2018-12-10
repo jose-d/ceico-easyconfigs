@@ -1,0 +1,82 @@
+easyblock = 'Waf'
+
+name = 'plc'
+version = '2.0'
+
+homepage = 'http://pla.esac.esa.int/pla/#home'
+description = """plc is the public Planck Likelihood Code.  It provides C and Fortran libraries that allow users to compute the log likelihoods of the temperature, polarization, and lensing maps.  Optionally, it also provides a python version of this library, as well as tools to modify the predetermined options for some likelihoods (e.g. changing the high-ell and low-ell lmin and lmax values of the temperature)."""
+
+toolchain = {'name': 'intel', 'version': '2018b'}
+
+source_urls = ['http://pla.esac.esa.int/pla/aio']
+sources = ['product-action?COSMOLOGY.FILE_ID=COM_Likelihood_Code-v2.0_R2.00.tar.bz2']
+
+patches = [
+    'plc-2.0-fix-build.patch',
+    'plc-2.0-fix-openmp-flags.patch'
+]
+
+pyver_maj_min = '2.7'
+pyver = '%s.15' % pyver_maj_min
+
+versionsuffix = '-Python-%s' % pyver
+
+dependencies = [
+    ('Python', pyver),
+    ('CFITSIO', '3.45')
+]
+
+configopts = "--icc --ifort --lapack_mkl=${MKLROOT} --cfitsio_prefix=${EBROOTCFITSIO}"
+
+modextravars = {
+    'CLIK_DATA': '%(installdir)s/share/clik',
+    'CLIK_PATH': '%(installdir)s',
+    'CLIK_PLUGIN': 'rel2015'
+}
+
+modextrapaths = {
+    'PYTHONPATH': 'lib/python2.7/site-packages'
+}
+
+moduleclass = 'lib'
+
+sanity_check_paths = {
+    'files': [
+        'lib/libclik_f90.so',
+        'lib/libclik_mkl.so',
+        'lib/libclik.so',
+        'lib/python%s/site-packages/clik/lkl_lensing.so' % pyver_maj_min,
+        'lib/python%s/site-packages/clik/lkl.so' % pyver_maj_min,
+        'lib/python%s/site-packages/clik/parametric.so' % pyver_maj_min,
+        'lib/python%s/site-packages/clik/rel2015.so' % pyver_maj_min,
+        'lib/python%s/site-packages/clik/cldf.pyc' % pyver_maj_min,
+        'lib/python%s/site-packages/clik/hpy.pyc' % pyver_maj_min,
+        'lib/python%s/site-packages/clik/__init__.pyc' % pyver_maj_min,
+        'lib/python%s/site-packages/clik/miniparse.pyc' % pyver_maj_min,
+        'lib/python%s/site-packages/clik/parobject.pyc' % pyver_maj_min,
+        'lib/python%s/site-packages/clik/smicahlp.pyc' % pyver_maj_min,
+        'lib/python%s/site-packages/clik/cldf.pyo' % pyver_maj_min,
+        'lib/python%s/site-packages/clik/hpy.pyo' % pyver_maj_min,
+        'lib/python%s/site-packages/clik/__init__.pyo' % pyver_maj_min,
+        'lib/python%s/site-packages/clik/miniparse.pyo' % pyver_maj_min,
+        'lib/python%s/site-packages/clik/parobject.pyo' % pyver_maj_min,
+        'lib/python%s/site-packages/clik/smicahlp.pyo' % pyver_maj_min,
+        'lib/python%s/site-packages/src/python/clik/cldf.py' % pyver_maj_min,
+        'lib/python%s/site-packages/src/python/clik/hpy.py' % pyver_maj_min,
+        'lib/python%s/site-packages/src/python/clik/__init__.py' % pyver_maj_min,
+        'lib/python%s/site-packages/src/python/clik/miniparse.py' % pyver_maj_min,
+        'lib/python%s/site-packages/src/python/clik/parobject.py' % pyver_maj_min,
+        'lib/python%s/site-packages/src/python/clik/smicahlp.py' % pyver_maj_min,
+        'include/clik.h',
+        'include/clik_lensing.h',
+        'include/clik.mod',
+        'include/clik_plik.mod',
+        'include/errorlist.h'
+    ],
+    'dirs': [
+        'lib',
+        'bin',
+        'include',
+        'share',
+    ],
+}

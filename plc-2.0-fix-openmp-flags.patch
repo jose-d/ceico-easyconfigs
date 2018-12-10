@@ -1,0 +1,32 @@
+diff -Nru plc-2.0_orig/waf_tools/try_icc.py plc-2.0/waf_tools/try_icc.py
+--- plc-2.0_orig/waf_tools/try_icc.py	2015-04-27 17:53:39.000000000 +0200
++++ plc-2.0/waf_tools/try_icc.py	2018-12-07 14:43:29.607417000 +0100
+@@ -29,7 +29,7 @@
+       mandatory=1,fragment = "#include <stdio.h>\nmain() {fprintf(stderr,\"hello world\");}\n",compile_filename='test.c',features='c cprogram')
+   ctx.start_msg("retrieve icc link line")
+   ctx.env["CCFLAGS_cc_omp"]=[]
+-  ctx.env.append_value("CCFLAGS_cc_omp","-openmp")
++  ctx.env.append_value("CCFLAGS_cc_omp","-fopenmp")
+   try:
+     #print "%s %s -dryrun -dynamiclib -shared-intel -no-cxxlib dummy.f90"%(ctx.env.FC," ".join(ctx.env.FCFLAGS))
+     llgo,llge = ctx.cmd_and_log("%s %s -dryrun -dynamiclib -shared-intel -no-cxxlib dummy.f90"%(ctx.env.CC[0]," ".join(ctx.env.CCFLAGS+ctx.env.CCFLAGS_cc_omp)), output=waflib.Context.BOTH)
+diff -Nru plc-2.0_orig/waf_tools/try_ifort.py plc-2.0/waf_tools/try_ifort.py
+--- plc-2.0_orig/waf_tools/try_ifort.py	2015-06-03 14:38:03.000000000 +0200
++++ plc-2.0/waf_tools/try_ifort.py	2018-12-07 14:43:29.610187000 +0100
+@@ -53,7 +53,7 @@
+     ctx.env.LINKFLAGS_fcshlib = ['-dynamiclib']
+   ctx.env.append_value('FCFLAGS',ctx.env.mopt)
+   ctx.env["FCFLAGS_fc_omp"]=[]
+-  ctx.env.append_value("FCFLAGS_fc_omp","-openmp")
++  ctx.env.append_value("FCFLAGS_fc_omp","-fopenmp")
+   ctx.env.FCSHLIB_MARKER = [""]
+   ctx.env.FCSTLIB_MARKER = [""]
+   ctx.start_msg("Check ifort version") 
+@@ -104,7 +104,7 @@
+   if sys.platform.lower()=="darwin":
+     ctx.env.LINKFLAGS_fcshlib = ['-dynamiclib']
+   ctx.env.append_value('FCFLAGS',ctx.env.mopt)
+-  ctx.env.append_value("FCFLAGS_fc_omp","-openmp")
++  ctx.env.append_value("FCFLAGS_fc_omp","-fopenmp")
+   ctx.env.FCSHLIB_MARKER = [""]
+   ctx.env.FCSTLIB_MARKER = [""]
