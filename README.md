@@ -7,7 +7,7 @@ Easyconfigs usually with patches related to ceico HPC systems requirements.
 * plack likelihood code, http://pla.esac.esa.int/pla/aio
 * TODO before upstream merge attempt:
  * pyfits Python module (and define it as dependency)
- * (hidden?) module for shared data
+ * (hidden?) module for shared data - dwnld: `product-action?COSMOLOGY.FILE_ID=COM_Likelihood_Data-baseline_R2.00.tar.gz`
 
 ### lang/Python/2.7.15-intel-2018b
 * +cffi (already in upstream master)
