@@ -12,8 +12,14 @@ source_urls = ['http://pla.esac.esa.int/pla/aio']
 sources = ['product-action?COSMOLOGY.FILE_ID=COM_Likelihood_Code-v2.0_R2.00.tar.bz2']
 
 patches = [
-    'plc-2.0-fix-build.patch',
-    'plc-2.0-fix-openmp-flags.patch'
+    'plc-2.0-fix-build.patch',		# workarounds fixing waf build behavior in EB environment
+    'plc-2.0-fix-openmp-flags.patch',	# add proper openmp flags for icc and ifort
+]
+
+checksums = [
+    'cab9917723b0eb69e7b2521bb074aaabb412aac6eb36e902cd9372db67ac328e',  # product-action?COSMOLOGY.FILE_ID=COM_Likelihood_Code-v2.0_R2.00.tar.bz2
+    '226695920af84620d0b31bf4afecbf5bbd01e709c5c668da2d2ebcc4e1ceef0a',  # plc-2.0-fix-build.patch
+    'ffc3f7012c22ad735e6d8b2cac77efd79a8e7681f32de5a62df51e0b2d685f82',  # plc-2.0-fix-openmp-flags.patch 
 ]
 
 pyver_maj_min = '2.7'
@@ -21,17 +27,37 @@ pyver = '%s.15' % pyver_maj_min
 
 versionsuffix = '-Python-%s' % pyver
 
+# warning, pyfits is not yet in upstream, cfitsio is in master, not in distribution branch
 dependencies = [
     ('Python', pyver),
-    ('CFITSIO', '3.45')
+    ('CFITSIO', '3.45'),
+    ('pyfits', '3.5', '-Python-2.7.15')
 ]
 
-configopts = "--icc --ifort --lapack_mkl=${MKLROOT} --cfitsio_prefix=${EBROOTCFITSIO}"
+configopts = "--icc " 					# Do not test for gcc and only use icc
+configopts += "--ifort " 				# Do not test for gfortran and only use ifort
+configopts += "--lapack_mkl=${MKLROOT} " 		# location of the EB mkl install
+configopts += "--cfitsio_prefix=${EBROOTCFITSIO} "	# location of the EB cfitsio install
+
+# download data and verify checksum
+buildopts = '&& DATA_FILENAME="COM_Likelihood_Data-baseline_R2.00.tar.gz"'
+buildopts += '&& DATA_CHECKSUM="7c62c5afc105bff28c2da3eddb870b8180536d30e31c4d419b307ad3996e17ab"'
+buildopts += '&& DATA_BASEURL="http://pla.esac.esa.int/pla/aio/product-action?COSMOLOGY.FILE_ID="'
+buildopts += '&& wget "${DATA_BASEURL}${DATA_FILENAME}" -O ${DATA_FILENAME}'
+buildopts += '&& echo "${DATA_CHECKSUM}  ./${DATA_FILENAME}" > ./${DATA_FILENAME}.sha256'
+buildopts += '&& sha256sum -c ./${DATA_FILENAME}.sha256'
+
+# unpack data into directory in installdir/share:
+installopts = '&& DATA_FILENAME="COM_Likelihood_Data-baseline_R2.00.tar.gz"'	# we need to redefine variables as env is cleaned
+installopts +='&& DATA_DIRNAME="Likelihood_Data-baseline_R2.00"'
+installopts += "&& mkdir -p %(installdir)s/share/${DATA_DIRNAME}"
+installopts += "&& tar -xf ${DATA_FILENAME} --strip-components=1 -C %(installdir)s/share/${DATA_DIRNAME}/"
 
 modextravars = {
     'CLIK_DATA': '%(installdir)s/share/clik',
     'CLIK_PATH': '%(installdir)s',
-    'CLIK_PLUGIN': 'rel2015'
+    'CLIK_PLUGIN': 'rel2015',
+    'PLANCK_2015_DATA': '%(installdir)s/share/Likelihood_Data-baseline_R2.00',	# dir with unpacked COM_Likelihood_Data-baseline_R2.00.tar.gz
 }
 
 modextrapaths = {
