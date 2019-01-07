@@ -5,15 +5,15 @@ version = '2.30.0'
 
 homepage = 'https://www.freedesktop.org/wiki/Accessibility/AT-SPI2/'
 description = """
-At-Spi2 is a protocol over DBus, toolkit widgets use it to provide their content to screen readers such as Orca.
+At-Spi2-core includes the protocol definitions for the new D-Bus at-spi.
 """
 
 toolchain = {'name': 'GCCcore', 'version': '7.3.0'}
 toolchainopts = {'pic': True}
 
-sources = ['at-spi2-core-AT_SPI2_CORE_2_30_0.tar.gz']
-source_urls = ['https://gitlab.gnome.org/GNOME/at-spi2-core/-/archive/AT_SPI2_CORE_2_30_0/']
-checksums = ['d21ec47639130894ac3f9586ff5b8132142f51e2266305cb0a7f7f6f144d54e7']
+sources = [SOURCELOWER_TAR_XZ]
+source_urls = [FTPGNOME_SOURCE]
+checksums = ['0175f5393d19da51f4c11462cba4ba6ef3fa042abf1611a70bdfed586b7bfb2b']
 
 builddependencies = [
     ('Meson', '0.48.1','-Python-3.6.6',('foss','2018b')),

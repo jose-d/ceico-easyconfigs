@@ -1,20 +1,20 @@
-#at-spi2-atk-2.26.2-GCCcore-7.3.0.eb
 easyblock = 'MesonNinja'
 
 name = 'at-spi2-atk'
 version = '2.26.2'
 
-homepage = 'TBD'
+# the 'official' URL from README (http://www.linuxfoundation.org/en/AT-SPI_on_D-Bus) links to empty wikipage.
+homepage = 'https://github.com/GNOME/at-spi2-atk'
 description = """
-TBD
+GTK+ module for bridging AT-SPI to ATK
 """
 
 toolchain = {'name': 'GCCcore', 'version': '7.3.0'}
 toolchainopts = {'pic': True}
 
-sources = ['AT_SPI2_ATK_2_26_2.tar.gz']
-source_urls = ['https://github.com/GNOME/at-spi2-atk/archive/']
-checksums = ['f1810e5ec196dac1b126c530342b300790cbb6da38f5969d82fee23b45264fb0']
+sources = [SOURCELOWER_TAR_XZ]
+source_urls = [FTPGNOME_SOURCE]
+checksums = ['61891f0abae1689f6617a963105a3f1dcdab5970c4a36ded9c79a7a544b16a6e']
 
 builddependencies = [
     ('Meson', '0.48.1','-Python-3.6.6',('foss','2018b')),
