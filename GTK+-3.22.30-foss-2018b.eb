@@ -18,26 +18,27 @@ builddependencies = [
     ('GObject-Introspection', '1.54.1', '-Python-2.7.15'),
     ('pkg-config', '0.29.2'),
 ]
+
 dependencies = [
     ('GLib', '2.54.3','',('GCCcore','7.3.0')),		# dep as specified on GTK+ www (Jan 2019)- https://www.gtk.org/download/linux.php
-    ('ATK', '2.26.1'),					# dep as specified on GTK+ www -''-
-    ('Gdk-Pixbuf', '2.36.12'),				# dep as specified on GTK+ www -''-
-    ('Pango', '1.40.14','',('foss','2018b')),		# dep as specified on GTK+ www -''-
-    ('cairo', '1.14.12','',('GCCcore','7.3.0')),	# not defined so latest one available in EasyBuild (Jan 2019)
+    ('ATK', '2.26.1'),					# -''-
+    ('Gdk-Pixbuf', '2.36.12'),				# -''-
+    ('Pango', '1.40.14'),				# -''-
+    ('cairo', '1.14.12','',('GCCcore','7.3.0')),	# not specified, so latest one available in EasyBuild ATM (Jan 2019)
     ('fontconfig', '2.13.0'),				# -''-
     ('X11','20180604'),					# -''-
     ('libiconv','1.15'),				# -''-
     ('gettext','0.19.8.1'),				# -''-
-    ('libepoxy','1.5.3','',('GCCcore','7.3.0')),	# latest stable available (Jan 2019)
+    ('libepoxy','1.5.3','',('GCCcore','7.3.0')),	# latest upstream stable available (Jan 2019)
     ('Mesa','18.1.1'),					# latest one available in EasyBuild (Jan 2019)
-    ('at-spi2-atk','2.26.2','',('GCCcore','7.3.0'))	# latest compatible one (Jan 2019)
+    ('at-spi2-atk','2.26.2')				# latest compatible one (Jan 2019)
 ]
 
 # from GTK2
 configopts = "--disable-silent-rules --enable-introspection=yes"
 
 sanity_check_paths = {
-    'files': ['lib/libgtk-3.so.%s' % SHLIB_EXT],
+    'files': ['lib/libgtk-3.%s' % SHLIB_EXT],
     'dirs': [],
 }
 

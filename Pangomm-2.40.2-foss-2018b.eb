@@ -1,0 +1,27 @@
+easyblock = 'ConfigureMake'
+
+name = 'Pangomm'
+#highest stable ATM (2019/01)
+version = '2.40.2'
+
+homepage = 'http://www.pango.org/'
+description = """ The Pangomm package provides a C++ interface to Pango. """
+
+toolchain = {'name': 'foss', 'version': '2018b'}
+
+source_urls = [FTPGNOME_SOURCE]
+sources = [SOURCELOWER_TAR_XZ]
+#checksums = ['ca6da067ff93a6445780c0b4b226eb84f484ab104b8391fb744a45cbc7edbf56']
+
+dependencies = [
+    ('GLibmm', '2.54.1','',('GCCcore','7.3.0')),	# good
+    ('cairomm', '1.12.0','',('GCCcore','7.3.0')),	# currently the only stable version available
+    ('Pango', '1.40.14'),				# version related to GTK+3
+]
+
+sanity_check_paths = {
+    'files': ['lib/libpangomm-1.4.%s' % SHLIB_EXT],	#libpangomm-2.42.so
+    'dirs': [],
+}
+
+moduleclass = 'vis'
