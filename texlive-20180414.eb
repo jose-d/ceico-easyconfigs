@@ -1,0 +1,45 @@
+easyblock = 'Binary'
+
+name = 'texlive'
+version = '20180414'
+
+homepage = 'https://www.tug.org/texlive/'
+description = """
+TeX Live is an easy way to get up and running with the TeX document production system. 
+It provides a comprehensive TeX system with binaries for most flavors of Unix, 
+including GNU/Linux, and also Windows. It includes all the major TeX-related programs, 
+macro packages, and fonts that are free software, 
+including support for many languages around the world.
+"""
+
+toolchain = {'name': 'dummy', 'version': 'dummy'}
+
+sources = ['install-tl-unx.tar.gz']
+# we use ftp at tug as this is ATM AFAIK the only place with versioned installer
+source_urls = ['ftp://tug.org/historic/systems/texlive/2018/']
+# this patch creates expect 
+patches = [ ('texlive-20180414-add_expect.patch',1) ]
+
+checksums = [
+    '0f7d51b4bda15b19c83fe1255f7c059dab1b9b8be4617fdc6b7289131d5b55de',	# install-tl-unx.tar.gz 2018
+    '5a16b68fd53d1b88aae977f4da267d36efc84573f8338243be97e423bc6c613f',	# texlive-20180414-add_expect.patch
+]
+
+# unpack the installer:
+preinstallopts = 'tar xf %(builddir)s/install-tl-unx.tar.gz --strip-components=1 && '
+# install everything into installdir:
+install_cmd = 'export TEXLIVE_INSTALL_PREFIX=%(installdir)s; expect install.expect'
+
+prepend_to_path = '2018/bin/x86_64-linux'
+
+modextrapaths = {
+    'MANPATH': '2018/texmf-dist/doc/man',
+    'INFOPATH': '2018/texmf-dist/doc/info'
+}
+
+sanity_check_paths = {
+    'files': ['2018/bin/x86_64-linux/pdftex'],
+    'dirs': ["."]
+}
+
+moduleclass = 'tools'

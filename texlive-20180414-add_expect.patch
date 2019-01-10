@@ -1,0 +1,12 @@
+diff -Nru ./eb_texlive_no_expect/install.expect ./eb_texlive/install.expect
+--- ./install.expect	1970-01-01 01:00:00.000000000 +0100
++++ ./install.expect	2019-01-08 14:45:28.253707000 +0100
+@@ -0,0 +1,8 @@
++#!/usr/bin/expect
++
++set timeout -1
++
++spawn "$::env(PWD)/install-tl"
++expect 'Enter command: '
++send -- "i\r"
++expect eof
