@@ -9,7 +9,7 @@ description = """
 GTK+ module for bridging AT-SPI to ATK
 """
 
-toolchain = {'name': 'GCCcore', 'version': '7.3.0'}
+toolchain = {'name': 'foss', 'version': '2018b'}
 toolchainopts = {'pic': True}
 
 sources = [SOURCELOWER_TAR_XZ]
@@ -18,17 +18,15 @@ checksums = ['61891f0abae1689f6617a963105a3f1dcdab5970c4a36ded9c79a7a544b16a6e']
 
 builddependencies = [
     ('Meson', '0.48.1','-Python-3.6.6',('foss','2018b')),
-    ('Ninja', '1.8.2','',('foss','2018b')),
-    ('pkg-config', '0.29.2'),
+    ('Ninja', '1.8.2'),
+    ('pkg-config', '0.29.2','',('GCCcore','7.3.0')),
 ]
 
 dependencies = [
-    ('binutils', '2.30'),
-    ('Python','3.6.6','',('foss','2018b')),
-    ('GLib','2.54.3'),
-    ('ATK','2.26.1','',('foss','2018b')),
-    ('DBus','1.13.6'),
-    ('at-spi2-core','2.30.0'),
+    ('GLib','2.54.3','',('GCCcore','7.3.0')),
+    ('ATK','2.26.1'),
+    ('DBus','1.13.6','',('GCCcore','7.3.0')),
+    ('at-spi2-core','2.30.0','',('GCCcore','7.3.0')),
 ]
 
 configopts = ''
