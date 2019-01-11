@@ -1,0 +1,24 @@
+--- frontend/gtkmm/CMakeLists.txt_bak	2019-01-10 18:47:46.478572000 +0100
++++ frontend/gtkmm/CMakeLists.txt	2019-01-10 18:48:31.555318000 +0100
+@@ -134,7 +134,7 @@
+ 	if(APPLE OR ${CMAKE_SYSTEM_NAME} MATCHES ".*BSD|DragonFly")
+ 	set(ICON_PREFIX "${CMAKE_INSTALL_PREFIX}")
+ 	else()
+-	set(ICON_PREFIX "/usr")
++	set(ICON_PREFIX "${CMAKE_INSTALL_PREFIX}")
+ 	endif()
+ 
+ 	#set(ICON_THEME ${ICON_PREFIX}/share/icons/hicolor/index.theme)
+@@ -149,9 +149,9 @@
+ 	install(FILES    ${CADABRA_IMAGES_DIR}/256x256/cadabra2-gtk.png   DESTINATION ${ICON_PREFIX}/share/icons/hicolor/256x256/apps)
+ 	install(FILES    ${CADABRA_IMAGES_DIR}/cadabra2-gtk.svg           DESTINATION ${ICON_PREFIX}/share/icons/hicolor/scalable/apps)
+ 	install(FILES    ${CADABRA_ROOT_DIR}/config/cadabra2-gtk.desktop  DESTINATION ${ICON_PREFIX}/share/applications)
+-	install(CODE     "execute_process(COMMAND touch ${ICON_PREFIX}/share/icons/hicolor/icon-theme.cache)")
+-	install(CODE     "execute_process(COMMAND gtk-update-icon-cache-3.0 ${ICON_PREFIX}/share/icons/hicolor)")
+-	install(CODE     "execute_process(COMMAND chmod go+r ${ICON_PREFIX}/share/icons/hicolor/icon-theme.cache)")
++#	install(CODE     "execute_process(COMMAND touch ${ICON_PREFIX}/share/icons/hicolor/icon-theme.cache)")
++#	install(CODE     "execute_process(COMMAND gtk-update-icon-cache-3.0 ${ICON_PREFIX}/share/icons/hicolor)")
++#	install(CODE     "execute_process(COMMAND chmod go+r ${ICON_PREFIX}/share/icons/hicolor/icon-theme.cache)")
+ 
+ 	# Install shared libraries on Windows. 
+ 	# https://stackoverflow.com/questions/32662215/how-do-you-install-gtk-3-0-on-windows
