@@ -23,8 +23,12 @@ checksums = [
     'da206b32058718d962780567518d81d8cd6288ecfa03613370dac875fec0083a',  # sympy-1.3_symlink.patch
 ]
 
+python = 'Python'
+pyver = '2.7.15'
+pyshortver = '.'.join(pyver.split('.')[:2])
+
 dependencies = [
-    ('Python', '2.7.15'),
+    (python, pyver),
     ('mpmath', '1.0.0', '-Python-%(pyver)s'),
 ]
 
