@@ -13,21 +13,44 @@ sources = ['%(version)s.tar.gz']
 # standard github template
 # not used as name != github project ..
 source_urls = ['https://github.com/kpeeters/cadabra2/archive']
-checksums = ['2e75e5bf1763e55d795eb876bff61e1b5b359488a8b5db0b45eabd0d04df92c9']
 
-patches = []
+patches = [ ('cadabra-2.2.4-foss-2018b_move_icondir.patch') ]
 
-builddependencies = [('CMake', '3.12.1')]
+checksums = [
+    '2e75e5bf1763e55d795eb876bff61e1b5b359488a8b5db0b45eabd0d04df92c9',	# https://github.com/kpeeters/cadabra2/archive/2.2.4.tar.gz
+    '74ecb2011e1a7f9bac1bdadc54344cf5780a6b246c2f3fa8fe9f07496bb6d1c9', # cadabra-2.2.4-foss-2018b_move_icondir.patch
+]
 
-dependencies = []
+python = 'Python'
+pyver = '3.6.6'
+pyshortver = '.'.join(pyver.split('.')[:2])
+
+versionsuffix = "-%s-%s" % (python, pyver)
+
+builddependencies = [
+    ('CMake', '3.12.1'),
+]
+
+# not sure how much deps should be really in runtime. But not specified ATM.
+dependencies = [
+    (python, pyver),
+    ('GMP','6.1.2'),
+    ('LibUUID','1.0.3'),
+    ('SQLite','3.24.0'),
+    ('Gtkmm','3.22.3'),
+    ('Boost','1.68.0',versionsuffix),
+    ('git','2.19.1'),
+    ('texlive','20180414','', True),
+    ('matplotlib','3.0.0',versionsuffix),
+#+sympy TODO!
+]
 
 # The sanity test MUST be tuned before going production and submitting your contribution to upstream git repositories
 # sure.
 # TBD.
 sanity_check_paths = {
-    'files': [],
+    'files': ['bin/cadabra2-gtk'],
     'dirs': ["."]
 }
 
-# You SHOULD change the following line; Kindly consult other easyconfigs for possible options
-moduleclass = 'base'
+moduleclass = 'phys'
