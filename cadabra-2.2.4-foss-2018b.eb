@@ -21,10 +21,6 @@ checksums = [
     '74ecb2011e1a7f9bac1bdadc54344cf5780a6b246c2f3fa8fe9f07496bb6d1c9', # cadabra-2.2.4-foss-2018b_move_icondir.patch
 ]
 
-python = 'Python'
-pyver = '3.6.6'
-pyshortver = '.'.join(pyver.split('.')[:2])
-
 versionsuffix = "-%s-%s" % (python, pyver)
 
 builddependencies = [
@@ -33,7 +29,7 @@ builddependencies = [
 
 # not sure how much deps should be really in runtime. But not specified ATM.
 dependencies = [
-    (python, pyver),
+    ('Python', '3.6.6'),
     ('GMP','6.1.2'),
     ('LibUUID','1.0.3'),
     ('SQLite','3.24.0'),
