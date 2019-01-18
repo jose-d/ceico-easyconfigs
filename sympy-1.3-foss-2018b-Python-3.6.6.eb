@@ -28,8 +28,7 @@ checksums = [
 ]
 
 dependencies = [
-    ('Python', '2.7.15'),
-    ('mpmath', '1.0.0', '-Python-%(pyver)s'),
+    ('Python', '3.6.6'),
 ]
 
 download_dep_fail = True

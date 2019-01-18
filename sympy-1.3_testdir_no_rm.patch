@@ -1,0 +1,20 @@
+--- sympy-1.3/sympy/utilities/_compilation/tests/test_compilation.py.orig        2018-09-06 21:27:21.000000000 +0200
++++ sympy-1.3/sympy/utilities/_compilation/tests/test_compilation.py             2019-01-17 14:10:04.337865000 +0100
+@@ -50,12 +50,8 @@
+ 
+     compile_kw = dict(std='c99', include_dirs=[numpy.get_include()])
+     info = None
+-    try:
+-        mod, info = compile_link_import_strings(_sources1, compile_kwargs=compile_kw)
+-        data = numpy.random.random(1024*1024*8)  # 64 MB of RAM needed..
+-        res_mod = mod.sigmoid(data)
+-        res_npy = npy(data)
+-        assert numpy.allclose(res_mod, res_npy)
+-    finally:
+-        if info and info['build_dir']:
+-            shutil.rmtree(info['build_dir'])
++    mod, info = compile_link_import_strings(_sources1, compile_kwargs=compile_kw)
++    data = numpy.random.random(1024*1024*8)  # 64 MB of RAM needed..
++    res_mod = mod.sigmoid(data)
++    res_npy = npy(data)
++    assert numpy.allclose(res_mod, res_npy)
