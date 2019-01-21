@@ -25,6 +25,10 @@ checksums = [
     '5a16b68fd53d1b88aae977f4da267d36efc84573f8338243be97e423bc6c613f',	# texlive-20180414-add_expect.patch
 ]
 
+builddependencies = [
+    ('expect', '5.45.4'),
+]
+
 # unpack the installer:
 preinstallopts = 'tar xf %(builddir)s/install-tl-unx.tar.gz --strip-components=1 && '
 # install everything into installdir:
