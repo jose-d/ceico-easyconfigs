@@ -2,16 +2,14 @@ easyblock = 'CMakeMake'
 
 name = 'cadabra'
 version = '2.2.4'
+versionsuffix = '-Python-%(pyver)s'
 
 homepage = 'https://cadabra.science'
 description = """a field-theory motivated approach to computer algebra"""
 
 toolchain = {'name': 'foss', 'version': '2018b'}
-toolchainopts = {}
 
 sources = ['%(version)s.tar.gz']
-# standard github template
-# not used as name != github project ..
 source_urls = ['https://github.com/kpeeters/cadabra2/archive']
 
 patches = [ ('cadabra-2.2.4-foss-2018b_move_icondir.patch') ]
@@ -20,8 +18,6 @@ checksums = [
     '2e75e5bf1763e55d795eb876bff61e1b5b359488a8b5db0b45eabd0d04df92c9',	# https://github.com/kpeeters/cadabra2/archive/2.2.4.tar.gz
     '74ecb2011e1a7f9bac1bdadc54344cf5780a6b246c2f3fa8fe9f07496bb6d1c9', # cadabra-2.2.4-foss-2018b_move_icondir.patch
 ]
-
-versionsuffix = "-%s-%s" % (python, pyver)
 
 builddependencies = [
     ('CMake', '3.12.1'),
@@ -38,11 +34,11 @@ dependencies = [
     ('git','2.19.1'),
     ('texlive','20180414','', True),
     ('matplotlib','3.0.0',versionsuffix),
-#+sympy TODO!
+    ('sympy','1.3'),
 ]
 
 # The sanity test MUST be tuned before going production and submitting your contribution to upstream git repositories
-# sure.
+# -> sure.
 # TBD.
 sanity_check_paths = {
     'files': ['bin/cadabra2-gtk'],
