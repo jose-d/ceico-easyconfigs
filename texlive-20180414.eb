@@ -25,7 +25,7 @@ checksums = [
     '5a16b68fd53d1b88aae977f4da267d36efc84573f8338243be97e423bc6c613f',	# texlive-20180414-add_expect.patch
 ]
 
-builddependencies = [
+dependencies = [ # as we do the expect in "install" step, we need the expect in deps, not in installdeps..
     ('expect', '5.45.4','',('GCCcore','7.3.0'))
 ]
 
