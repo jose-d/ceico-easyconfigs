@@ -32,7 +32,7 @@ dependencies = [ # as we do the expect in "install" step, we need the expect in 
 # unpack the installer:
 preinstallopts = 'tar xf %(builddir)s/install-tl-unx.tar.gz --strip-components=1 && '
 # install everything into installdir:
-install_cmd = 'export TEXLIVE_INSTALL_PREFIX=%(installdir)s && env && chmod +x install.expect && ./install.expect'
+install_cmd = 'export TEXLIVE_INSTALL_PREFIX=%(installdir)s && module load lang/expect/5.45.4-GCCcore-7.3.0 && env && chmod +x install.expect && ./install.expect'
 
 prepend_to_path = '2018/bin/x86_64-linux'
 
