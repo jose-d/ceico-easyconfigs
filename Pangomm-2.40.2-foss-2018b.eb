@@ -15,7 +15,7 @@ sources = [SOURCELOWER_TAR_XZ]
 
 dependencies = [
     ('GLibmm', '2.54.1','',('GCCcore','7.3.0')),	# good
-    ('cairomm', '1.12.0','',('GCCcore','7.3.0')),	# currently the only stable version available
+    ('cairomm', '1.12.2','',('GCCcore','7.3.0')),	# latest stable on ftpgnome is 1.12 so latest is .2..
     ('Pango', '1.40.14'),				# version related to GTK+3
 ]
 

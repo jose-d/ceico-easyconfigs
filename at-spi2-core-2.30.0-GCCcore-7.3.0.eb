@@ -39,3 +39,6 @@ sanity_check_paths = {
 }
 
 moduleclass = 'vis'
+
+#TODO:
+# * fix the problem with introducing Python 3.6.6 with foss into this GCCcore ec
