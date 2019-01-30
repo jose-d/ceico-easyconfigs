@@ -18,6 +18,8 @@ checksums = ['7cc28c732b04d70ed34f0c923543129083cfb90580ea4a2b4be5b38802bf6a4a']
 dependencies = [
     ('GLib', '2.54.3'),          # same - from gnome
     ('libsigc++', '2.10.1'),	 # another gnome lib
+    ('PCRE','8.41'),		 # pcre is needed too - if it'd be found on system, it'd be linked from system
+    ('libffi','3.2.1')           # same as pcre
 ]
 
 builddependencies = [
