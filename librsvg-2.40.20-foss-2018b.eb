@@ -1,0 +1,36 @@
+easyblock = 'ConfigureMake'
+
+name = 'librsvg'
+version = '2.40.20'
+
+homepage = 'https://wiki.gnome.org/action/show/Projects/LibRsvg'
+description = """librsvg is a library to render SVG files using cairo."""
+
+toolchain = {'name': 'foss', 'version': '2018b'}
+
+sources = [SOURCE_TAR_XZ]
+source_urls = ['https://download.gnome.org/sources/librsvg/%(version_major_minor)s']
+checksums = ['cff4dd3c3b78bfe99d8fcfad3b8ba1eee3289a0823c0e118d78106be6b84c92b']
+
+builddependencies = [
+    ('Autotools', '20180311'),
+    ('Rust', '1.29.2', '', ('GCCcore', '7.3.0')),
+]
+
+
+dependencies = [
+    ('Gdk-Pixbuf', '2.36.12'),
+    ('Pango', '1.40.14'),
+    ('cairo', '1.14.12', '', ('GCCcore', '7.3.0')),
+    ('libcroco', '0.6.12', '', ('GCCcore', '7.3.0')),
+]
+
+# this loader wants to install in the directory of Gdk-Pixbuf itself, so disable
+configopts = '--disable-pixbuf-loader'
+
+sanity_check_paths = {
+    'files': ['bin/rsvg-convert', 'lib/librsvg-%%(version_major)s.%s' % SHLIB_EXT, 'lib/librsvg-2.a'],
+    'dirs': ['include/librsvg-2.0', 'share']
+}
+
+moduleclass = 'vis'
