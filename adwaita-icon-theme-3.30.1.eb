@@ -1,0 +1,30 @@
+easyblock = 'ConfigureMake'
+
+name = 'adwaita-icon-theme'
+version = '3.30.1'
+
+homepage = 'https://gnome.org'
+description = """Standard icons for GNOME"""
+
+toolchain = {'name': 'dummy', 'version': 'dummy'}
+
+source_urls = [FTPGNOME_SOURCE]
+sources = [SOURCELOWER_TAR_XZ]
+checksums = ['6d752a2b1bc668483956d4485c39cad1642d9358e133ff689526e43674a4e1ce']
+
+builddependencies = [
+    ('Autotools', '20180311', '', ('GCCcore', '7.3.0')),
+    ('librsvg', '2.40.20', '', ('foss', '2018b')),
+    ('GTK+', '3.22.30','',('foss','2018b')),
+]
+
+sanity_check_paths = {
+    'files': ['share/icons/Adwaita/icon-theme.cache'],
+    'dirs': ["."]
+}
+
+modextrapaths = {
+    'XDG_DATA_DIRS': 'share',
+}
+
+moduleclass = 'vis'

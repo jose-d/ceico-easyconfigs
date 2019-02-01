@@ -1,0 +1,11 @@
+--- configure.orig 2017-12-15 23:47:12.000000000 +0100
++++ configure 2019-02-01 14:20:56.748620000 +0100
+@@ -14743,7 +14743,7 @@
+   # First try the standalone gdk-pixbuf
+   gdk_pixbuf_binary_version="`$PKG_CONFIG --variable=gdk_pixbuf_binary_version gdk-pixbuf-2.0`"
+   gdk_pixbuf_binarydir="`$PKG_CONFIG --variable=gdk_pixbuf_binarydir gdk-pixbuf-2.0`"
+-  gdk_pixbuf_moduledir=`$PKG_CONFIG --variable gdk_pixbuf_moduledir gdk-pixbuf-2.0`
++  gdk_pixbuf_moduledir="${prefix}/lib/loaders"
+   gdk_pixbuf_cache_file=`$PKG_CONFIG --variable gdk_pixbuf_cache_file gdk-pixbuf-2.0`
+ fi
+

@@ -20,20 +20,18 @@ builddependencies = [
 ]
 
 dependencies = [
-    ('GLib', '2.54.3','',('GCCcore','7.3.0')),		# dep as specified on GTK+ www (Jan 2019)- https://www.gtk.org/download/linux.php
-    ('ATK', '2.26.1'),					# -''-
-    ('Gdk-Pixbuf', '2.36.12'),				# -''-
-    ('Pango', '1.40.14'),				# -''-
-    ('cairo', '1.14.12','',('GCCcore','7.3.0')),	# not specified, so latest one available in EasyBuild ATM (Jan 2019)
-    ('fontconfig', '2.13.0'),				# -''-
-    ('X11','20180604'),					# -''-
-    ('libiconv','1.15'),				# -''-
-    ('gettext','0.19.8.1'),				# -''-
-    ('libepoxy','1.5.3','',('GCCcore','7.3.0')),	# latest upstream stable available (Jan 2019)
-    ('Mesa','18.1.1'),					# latest one available in EasyBuild (Jan 2019)
-    ('at-spi2-atk','2.26.2'),   			# latest compatible one (Jan 2019)
-    ('libpng','1.6.34','',('GCCcore','7.3.0')),     	# we need this for 
-    ('librsvg','2.40.20'),				# ..icons. :)
+    ('GLib', '2.54.3'),		# dep as specified on GTK+ www (Jan 2019)- https://www.gtk.org/download/linux.php
+    ('ATK', '2.26.1'),		# -''-
+    ('Gdk-Pixbuf', '2.36.12'),	# -''-
+    ('Pango', '1.40.14'),	# -''-
+    ('cairo', '1.14.12'),	# not specified, so latest one available in EasyBuild ATM (Jan 2019)
+    ('fontconfig', '2.13.0'),	# -''-
+    ('X11','20180604'),		# -''-
+    ('libiconv','1.15'),	# -''-
+    ('gettext','0.19.8.1'),	# -''-
+    ('libepoxy','1.5.3'),	# latest upstream stable available (Jan 2019)
+    ('Mesa','18.1.1'),		# latest one available in EasyBuild (Jan 2019)
+    ('at-spi2-atk','2.26.2'),   # latest compatible one (Jan 2019)
 ]
 
 # from GTK2

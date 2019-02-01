@@ -1,9 +1,7 @@
 easyblock = 'ConfigureMake'
 
 name = 'cairomm'
-# this is the highest stable version.
 version = '1.12.2'
-#version = '1.12.0'	# latest at ftognome
 
 homepage = 'http://cairographics.org'
 description = """
@@ -12,12 +10,6 @@ The Cairomm package provides a C++ interface to Cairo.
 
 toolchain = {'name': 'GCCcore', 'version': '7.3.0'}
 toolchainopts = {'pic': True}
-
-# there at FTPgnome some sources are missing.
-
-#source_urls = [FTPGNOME_SOURCE]
-#sources = [SOURCELOWER_TAR_XZ]
-#checksums = ['a54ada8394a86182525c0762e6f50db6b9212a2109280d13ec6a0b29bfd1afe6']
 
 source_urls = ['http://cairographics.org/releases/']
 sources = [SOURCE_TAR_GZ]

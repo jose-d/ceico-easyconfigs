@@ -1,7 +1,6 @@
 easyblock = 'ConfigureMake'
 
 name = 'Pangomm'
-#highest stable ATM (2019/01)
 version = '2.40.2'
 
 homepage = 'http://www.pango.org/'
@@ -11,16 +10,16 @@ toolchain = {'name': 'foss', 'version': '2018b'}
 
 source_urls = [FTPGNOME_SOURCE]
 sources = [SOURCELOWER_TAR_XZ]
-#checksums = ['ca6da067ff93a6445780c0b4b226eb84f484ab104b8391fb744a45cbc7edbf56']
+checksums = ['0a97aa72513db9088ca3034af923484108746dba146e98ed76842cf858322d05']
 
 dependencies = [
-    ('GLibmm', '2.54.1','',('GCCcore','7.3.0')),	# good
-    ('cairomm', '1.12.2','',('GCCcore','7.3.0')),	# latest stable on ftpgnome is 1.12 so latest is .2..
-    ('Pango', '1.40.14'),				# version related to GTK+3
+    ('GLibmm', '2.54.1'),  # good
+    ('cairomm', '1.12.2'), # latest stable on ftpgnome is 1.12 so latest is .2..
+    ('Pango', '1.40.14'),  # version related to GTK+3
 ]
 
 sanity_check_paths = {
-    'files': ['lib/libpangomm-1.4.%s' % SHLIB_EXT],	#libpangomm-2.42.so
+    'files': ['lib/libpangomm-1.4.%s' % SHLIB_EXT],
     'dirs': [],
 }
 

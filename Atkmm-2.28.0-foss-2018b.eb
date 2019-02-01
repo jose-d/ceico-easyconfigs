@@ -16,8 +16,8 @@ sources = [SOURCELOWER_TAR_XZ]
 checksums = ['4c4cfc917fd42d3879ce997b463428d6982affa0fb660cafcc0bc2d9afcedd3a']
 
 dependencies = [
-    ('GLibmm', '2.54.1','',('GCCcore','7.3.0')),
-    ('ATK', '2.26.1','',('foss','2018b')),
+    ('GLibmm', '2.54.1'),
+    ('ATK', '2.26.1'),
 ]
 
 sanity_check_paths = {

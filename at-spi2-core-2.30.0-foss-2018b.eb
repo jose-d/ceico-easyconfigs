@@ -8,7 +8,7 @@ description = """
 At-Spi2-core includes the protocol definitions for the new D-Bus at-spi.
 """
 
-toolchain = {'name': 'GCCcore', 'version': '7.3.0'}
+toolchain = {'name': 'foss', 'version': '2018b'}
 toolchainopts = {'pic': True}
 
 sources = [SOURCELOWER_TAR_XZ]
@@ -16,8 +16,8 @@ source_urls = [FTPGNOME_SOURCE]
 checksums = ['0175f5393d19da51f4c11462cba4ba6ef3fa042abf1611a70bdfed586b7bfb2b']
 
 builddependencies = [
-    ('Meson', '0.48.1', '-Python-3.6.6', ('foss', '2018b')),
-    ('Ninja', '1.8.2', '', ('foss', '2018b')),
+    ('Meson', '0.48.1', '-Python-3.6.6'),
+    ('Ninja', '1.8.2'),
     ('binutils', '2.30'),
 ]
 
@@ -39,6 +39,3 @@ sanity_check_paths = {
 }
 
 moduleclass = 'vis'
-
-#TODO:
-# * fix the problem with introducing Python 3.6.6 with foss into this GCCcore ec

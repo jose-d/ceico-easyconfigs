@@ -1,0 +1,31 @@
+easyblock = 'ConfigureMake'
+
+name = 'gsettings-desktop-schemas'
+version = '3.28.1'
+
+homepage = 'http://gnome.org'
+description = """gsettings-desktop-schemas contains a collection of GSettings schemas for settings shared by various components of a desktop."""
+
+toolchain = {'name': 'dummy', 'version': 'dummy'}
+
+sources = [SOURCE_TAR_XZ]
+source_urls = ['https://download.gnome.org/sources/gsettings-desktop-schemas/%(version_major_minor)s']
+checksums = ['f88ea6849ffe897c51cfeca5e45c3890010c82c58be2aee18b01349648e5502f']
+
+builddependencies = [
+    ('Autotools', '20180311','',('GCCcore','7.3.0')),
+    ('GObject-Introspection', '1.54.1', '-Python-2.7.15',('foss','2018b')),
+    ('pkg-config', '0.29.2', '', ('GCCcore','7.3.0')),
+    ('Perl','5.28.0','', ('GCCcore','7.3.0')),
+]
+
+sanity_check_paths = {
+    'files': ['share/glib-2.0/schemas/gschemas.compiled'],
+    'dirs': ["."]
+}
+
+modextrapaths = {
+    'XDG_DATA_DIRS': 'share',
+}
+
+moduleclass = 'vis'

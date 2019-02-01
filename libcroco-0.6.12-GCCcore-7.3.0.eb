@@ -24,8 +24,11 @@ dependencies = [
 ]
 
 sanity_check_paths = {
-    'files': ['bin/csslint-%(version_major_minor)s', 'lib/libcroco-%%(version_major_minor)s.%s' % SHLIB_EXT,
-              'lib/libcroco-%(version_major_minor)s.a'],
+    'files': [
+        'bin/csslint-%(version_major_minor)s',
+        'lib/libcroco-%%(version_major_minor)s.%s' % SHLIB_EXT,
+        'lib/libcroco-%(version_major_minor)s.a'
+    ],
     'dirs': ['include/libcroco-%(version_major_minor)s', 'share']
 }
 

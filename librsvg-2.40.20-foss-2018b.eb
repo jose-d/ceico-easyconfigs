@@ -10,27 +10,42 @@ toolchain = {'name': 'foss', 'version': '2018b'}
 
 sources = [SOURCE_TAR_XZ]
 source_urls = ['https://download.gnome.org/sources/librsvg/%(version_major_minor)s']
-checksums = ['cff4dd3c3b78bfe99d8fcfad3b8ba1eee3289a0823c0e118d78106be6b84c92b']
+checksums = [
+    'cff4dd3c3b78bfe99d8fcfad3b8ba1eee3289a0823c0e118d78106be6b84c92b',
+    'ed8623ad7becd270fb02154494acfcd2b481449d92afc15db999cb09b2199965'
+]
+
+patches = [ ('librsvg-2.40.20_pixbufloader_mod.patch') ]
 
 builddependencies = [
     ('Autotools', '20180311'),
-    ('Rust', '1.29.2', '', ('GCCcore', '7.3.0')),
+    ('Rust', '1.29.2' ),
+    ('GObject-Introspection', '1.54.1', '-Python-2.7.15'),
 ]
-
 
 dependencies = [
     ('Gdk-Pixbuf', '2.36.12'),
     ('Pango', '1.40.14'),
-    ('cairo', '1.14.12', '', ('GCCcore', '7.3.0')),
-    ('libcroco', '0.6.12', '', ('GCCcore', '7.3.0')),
+    ('cairo', '1.14.12'),
+    ('libcroco', '0.6.12'),
 ]
 
-# this loader wants to install in the directory of Gdk-Pixbuf itself, so disable
-configopts = '--disable-pixbuf-loader'
+# by default, svg loader is installed into gdk-pixbuf. We don't want to modify different software tree
+# so loaders are mirrored and cache recreated in %(installdir)s/loaders directory
+
+installopts = "&& cp -nr ${EBROOTGDKMINPIXBUF}/lib/gdk-pixbuf-2.0/2.10.0/loaders/* %(installdir)s/lib/loaders/"
+installopts += "&& export GDK_PIXBUF_MODULE_FILE=%(installdir)s/lib/loaders/loaders.cache"
+installopts += "&& export GDK_PIXBUF_MODULEDIR=%(installdir)s/lib/loaders"
+installopts += "&& gdk-pixbuf-query-loaders --update-cache"
 
 sanity_check_paths = {
     'files': ['bin/rsvg-convert', 'lib/librsvg-%%(version_major)s.%s' % SHLIB_EXT, 'lib/librsvg-2.a'],
     'dirs': ['include/librsvg-2.0', 'share']
+}
+
+modextrapaths = {
+    'GDK_PIXBUF_MODULEDIR': 'lib/loaders',
+    'GDK_PIXBUF_MODULE_FILE': 'lib/loaders/loaders.cache'
 }
 
 moduleclass = 'vis'

@@ -8,7 +8,7 @@ description = """
 (lib)Epoxy is a library for handling OpenGL function pointer management for you.
 """
 
-toolchain = {'name': 'GCCcore', 'version': '7.3.0'}
+toolchain = {'name': 'foss', 'version': '2018b'}
 toolchainopts = {'pic': True}
 
 sources = [SOURCELOWER_TAR_XZ]
