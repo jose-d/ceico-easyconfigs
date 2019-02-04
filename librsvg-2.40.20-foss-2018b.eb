@@ -15,6 +15,9 @@ checksums = [
     'ed8623ad7becd270fb02154494acfcd2b481449d92afc15db999cb09b2199965'
 ]
 
+# this patch ensure the svg pixbuf loader is installed into lib/loaders and not into
+# gdk-pixbuf installation directory
+
 patches = [ ('librsvg-2.40.20_pixbufloader_mod.patch') ]
 
 builddependencies = [
@@ -33,10 +36,13 @@ dependencies = [
 # by default, svg loader is installed into gdk-pixbuf. We don't want to modify different software tree
 # so loaders are mirrored and cache recreated in %(installdir)s/loaders directory
 
-installopts = "&& cp -nr ${EBROOTGDKMINPIXBUF}/lib/gdk-pixbuf-2.0/2.10.0/loaders/* %(installdir)s/lib/loaders/"
-installopts += "&& export GDK_PIXBUF_MODULE_FILE=%(installdir)s/lib/loaders/loaders.cache"
-installopts += "&& export GDK_PIXBUF_MODULEDIR=%(installdir)s/lib/loaders"
-installopts += "&& gdk-pixbuf-query-loaders --update-cache"
+postinstallcmds = [
+    "cp -nr ${EBROOTGDKMINPIXBUF}/lib/gdk-pixbuf-2.0/2.10.0/loaders/* %(installdir)s/lib/loaders/",
+    "export GDK_PIXBUF_MODULE_FILE=%(installdir)s/lib/loaders/loaders.cache && \
+    export GDK_PIXBUF_MODULEDIR=%(installdir)s/lib/loaders && \
+    gdk-pixbuf-query-loaders --update-cache"
+
+]
 
 sanity_check_paths = {
     'files': ['bin/rsvg-convert', 'lib/librsvg-%%(version_major)s.%s' % SHLIB_EXT, 'lib/librsvg-2.a'],
