@@ -36,7 +36,7 @@ dependencies = [
     ('matplotlib','3.0.0',versionsuffix),
     ('sympy','1.3',versionsuffix),
     ('adwaita-icon-theme','3.30.1','',True),
-    ('gsettings-desktop-schemas','3.28.1'),
+    ('gsettings-desktop-schemas','3.28.1','',True),
 ]
 
 # The sanity test MUST be tuned before going production and submitting your contribution to upstream git repositories
