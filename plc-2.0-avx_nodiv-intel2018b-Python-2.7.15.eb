@@ -1,7 +1,7 @@
 easyblock = 'Waf'
 
 name = 'plc'
-version = '2.0'
+version = '2.0-avx_nodiv'
 
 homepage = 'http://pla.esac.esa.int/pla/#home'
 description = """plc is the public Planck Likelihood Code.  It provides C and Fortran libraries that allow users to compute the log likelihoods of the temperature, polarization, and lensing maps.  Optionally, it also provides a python version of this library, as well as tools to modify the predetermined options for some likelihoods (e.g. changing the high-ell and low-ell lmin and lmax values of the temperature)."""
@@ -12,14 +12,16 @@ source_urls = ['http://pla.esac.esa.int/pla/aio']
 sources = ['product-action?COSMOLOGY.FILE_ID=COM_Likelihood_Code-v2.0_R2.00.tar.bz2']
 
 patches = [
-    'plc-2.0-fix-build.patch',		# workarounds fixing waf build behavior in EB environment
-    'plc-2.0-fix-openmp-flags.patch',	# add proper openmp flags for icc and ifort
+    'plc-2.0-fix-build.patch',		        # workarounds fixing waf build behavior in EB environment
+    'plc-2.0-fix-openmp-flags.patch',	        # add proper openmp flags for icc and ifort
+    'plc-2.0-add-avx_nodiv-flags.patch',	# avx NON-conservative options
 ]
 
 checksums = [
     'cab9917723b0eb69e7b2521bb074aaabb412aac6eb36e902cd9372db67ac328e',  # product-action?COSMOLOGY.FILE_ID=COM_Likelihood_Code-v2.0_R2.00.tar.bz2
     '226695920af84620d0b31bf4afecbf5bbd01e709c5c668da2d2ebcc4e1ceef0a',  # plc-2.0-fix-build.patch
-    '8e403ddef94ca3ae2851962418bfd4f189398f077438120915eb995be381ce4a',  # plc-2.0-fix-openmp-flags.patch 
+    '8e403ddef94ca3ae2851962418bfd4f189398f077438120915eb995be381ce4a',  # plc-2.0-fix-openmp-flags.patch
+    'd3bc2f266523ed29840eca553223cac035b8c50f087e83078499cf47806db813',  # plc-2.0-add-avx_nodiv-flags.patch
 ]
 
 pyver_maj_min = '2.7'

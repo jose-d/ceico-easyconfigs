@@ -1,0 +1,13 @@
+--- ./plc-2.0/waf_tools/mbits.py.orig   2015-06-03 14:38:03.000000000 +0200
++++ ./plc-2.0/waf_tools/mbits.py        2019-02-27 12:16:57.076680000 +0100
+@@ -22,7 +22,9 @@
+     if ctx.options.m32:    
+       mopt += ["-arch", "i386"]    
+   else:
+-    mopt = ["-m64"]
++    mopt = ["-m64","-xCORE-AVX512","-qopt-zmm-usage=high","-g", "-O3","-no-prec-div"]  #non conservative optimization :)
++#    mopt = ["-m64","-xCORE-AVX512","-qopt-zmm-usage=high","-g", "-O3"]
++#    mopt = ["-m64" ]  #original
+     if ctx.options.m32:
+       mopt = ["-m32"]
+
