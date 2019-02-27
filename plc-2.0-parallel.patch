@@ -1,0 +1,675 @@
+--- /home/users/jose/projects/plc_original/plc-2.0/src/bflike/bflike_smw.f90	2014-10-13 16:16:40.000000000 +0200
++++ ./plc-2.0/src/bflike/bflike_smw.f90	2019-02-26 19:19:10.931412000 +0100
+@@ -285,6 +285,7 @@
+ 
+ module bflike_smw
+ 
++  use omp_lib ! to be able to manipulate with nested OMP levels
+   use healpix_types
+   use bflike_utils_smw
+   use fitstools_smw , only : read_dbintab ,printerror 
+@@ -297,7 +298,7 @@
+   integer,save :: ntemp ,nq ,nu ,ntot ,nqu ,lmax ,lswitch ,ndata
+ 
+   real(dp) ,allocatable ,dimension(:,:) ,save :: clnorm ,Tvec ,Qvec ,Uvec ,dt ,auxdt ,cls
+-  real(dp) ,allocatable ,dimension(:) ,save   :: reflike ,pl,plm,f1,f2
++  real(dp) ,allocatable ,dimension(:) ,save   :: reflike, pl, plm, f1, f2
+   real(dp) ,allocatable ,target               :: S(:,:)
+ 
+   type(triangular_matrix) ,save               :: cos1 ,cos2 ,sin1 ,sin2 ,ncov 
+@@ -413,12 +414,13 @@
+   end subroutine external_compute_plms
+ 
+   subroutine init_pix_like_smw(clik_bflike_dir)
++    ! also lot of time #HOTSPOT..
+ 
+     implicit none
+     character(len=*) ,intent(in) :: clik_bflike_dir
+     
+     integer(i4b)          :: i ,j ,l ,myunit ,err  &
+-         ,iq ,iu ,jq ,ju ,il ,nside ,nwrite ,jdum ,blocksize ,readwrite ,hdutype
++         ,iq ,iu ,jq ,ju ,il ,nside ,nwrite ,jdum ,blocksize ,readwrite,hdutype, jdum0, jdum1, second_loop_base, third_loop_base
+     real(dp)              :: theta ,phi ,ell ,mod ,a1 ,a2 ,nullval
+     real(dp) ,allocatable :: evec(:,:) ,clstmp(:,:) ,NCVM(:,:) ,bl(:,:) 
+     character(len=256)    :: datafile ,basisfile ,clfiducial
+@@ -522,37 +524,66 @@
+ 
+ !geometry
+     allocate(Tvec(3,ntemp),Qvec(3,nq),Uvec(3,nu))
+-    jdum = -1
++
++    !$omp parallel sections private(jdum1,jdum0,theta,phi,mod,i) shared(Tvec,Qvec,Uvec)
++    !$omp section
+     do i=1,ntemp
+-       jdum = jdum+1;       theta = evec(jdum,1)
+-       jdum = jdum+1;       phi = evec(jdum,1)
++       jdum1 = (i*2)-1
++       jdum0 = jdum1-1
++       theta = evec(jdum0,1)
++       phi = evec(jdum1,1)
++
+        Tvec(1,i) = sin(theta)*cos(phi)
+        Tvec(2,i) = sin(theta)*sin(phi)
+        Tvec(3,i) = cos(theta)
+        mod = sqrt(sum(Tvec(:,i)**2))
+        Tvec(:,i) = Tvec(:,i)/mod
+     end do
++
++    !$omp section
++
++    second_loop_base = (2*ntemp)-1
++    !print*,'second_loop_base :', second_loop_base
+     do i=1,nq
+-       jdum = jdum+1;       theta = evec(jdum,1)
+-       jdum = jdum+1;       phi = evec(jdum,1)
++       jdum1 = second_loop_base+(i*2)
++       jdum0 = jdum1-1
++       theta = evec(jdum0,1)
++       phi = evec(jdum1,1)
++
+        Qvec(1,i) = sin(theta)*cos(phi)
+        Qvec(2,i) = sin(theta)*sin(phi)
+        Qvec(3,i) = cos(theta)
+        mod = sqrt(sum(Qvec(:,i)**2))
+        Qvec(:,i) = Qvec(:,i)/mod
+     end do
++
++    !$omp section
++    third_loop_base = (2*ntemp)+(2*nq)-1
++
+     do i=1,nu
+-       jdum = jdum+1;       theta = evec(jdum,1)
+-       jdum = jdum+1;       phi = evec(jdum,1)
++
++       jdum1 = third_loop_base+(i*2)
++       jdum0 = jdum1-1
++       theta = evec(jdum0,1)
++       phi = evec(jdum1,1)
++
+        Uvec(1,i) = sin(theta)*cos(phi)
+        Uvec(2,i) = sin(theta)*sin(phi)
+        Uvec(3,i) = cos(theta)
+        mod = sqrt(sum(Uvec(:,i)**2))
+        Uvec(:,i) = Uvec(:,i)/mod
+     end do
++    !$omp end parallel sections
++
++
++ 
+        
+ !beam
+-    iu = jdum
++    !iu = jdum
++    iu = ((2*ntemp)+(2*nq)+(2*nu)-1)    !order independent patch.. JDV
++    !print*,'after 3 loops, iu: :', iu
++    !print*,'jdum :', jdum
++
+     allocate(bl(0:4*nside,6),clnorm(2:lmax,6))
+     do i=1,6
+        il = iu+1
+@@ -618,6 +649,7 @@
+     end if
+ 
+     allocate(fevec(2:lswitch),feval(2:lswitch),cblocks(2:lswitch))
++    print*,'lswitch :', lswitch
+     do l=2,lswitch
+        call fevec(l)%alloc(nrow=ntot,ncol=3*(2*l+1))
+        fevec(l)%m = 0.d0
+@@ -661,6 +693,7 @@
+        stop
+     end if
+ 
++    print*,'ndata :',ndata
+     do i = 1,ndata
+        reflike(i) = sum(dt(:,i)*auxdt(:,i))
+     end do
+@@ -711,8 +744,11 @@
+     integer(i4b) :: i ,j ,iq ,jq ,iu ,ju
+     real(dp)     :: a1 ,a2
+ 
+-! QT
++    !TODO
++
++    !$omp parallel do private(j,jq,ju,a1,a2) shared(cos1,sin1)
+     do i=1,ntemp
++! QT
+        do j=1,nq
+           call get_rotation_angle(QVec(:,j),TVec(:,i),a1,a2)
+           jq = j +ntemp
+@@ -729,9 +765,12 @@
+        end do
+     end do
+ 
++    !$omp parallel do private(j,iq,jq,ju,a1,a2) shared(cos1,sin1,cos2,sin2)
+     do i = 1,nq
+ !QQ
+        iq = i+ntemp
++
++       !_DIR$ SIMD
+        do j = i,nq
+           call get_rotation_angle(QVec(:,j),QVec(:,i),a1,a2)
+           jq = j+ntemp
+@@ -743,6 +782,7 @@
+ 
+        end do
+ 
++       !_DIR$ SIMD
+        do j=1,nu
+           call get_rotation_angle(UVec(:,j),QVec(:,i),a1,a2)
+ 
+@@ -756,6 +796,7 @@
+        end do
+     end do
+ 
++    !$omp parallel do private(j,iu,ju,a1,a2) shared(cos1,sin1,cos2,sin2)
+     do i =1,nu
+ !UU
+        iu = i+ntemp+nq
+@@ -1040,7 +1081,7 @@
+     end if
+ 
+   end subroutine get_tt_cov
+-
++    
+   subroutine get_pp_cov(clsin,linf,lsup,cov,project_mondip,symmetrize)
+ 
+     implicit none
+@@ -1068,8 +1109,10 @@
+           f2(2)  = -12.d0*cz
+           do l = 3,lsup
+              plm(l) =(cz*(2*l -1)*plm(l-1) -(l+1)*plm(l-2))/(l -2)
+-             f1(l) =-(2*l-8 +l*(l-1)*(1.d0 -cz*cz))*plm(l)+ &
+-                  (2*l+4)*cz*plm(l-1)
++          enddo
++
++          do l = 3,lsup
++             f1(l) =-(2*l-8 +l*(l-1)*(1.d0 -cz*cz))*plm(l)+ (2*l+4)*cz*plm(l-1)
+              f2(l) = 4.d0*(-(l-1)*cz*plm(l) +(l+2)*plm(l-1))
+           enddo
+           qq = sum(cls(linf:lsup,smwEE)*f1(linf:lsup) -cls(linf:lsup,smwBB)*f2(linf:lsup))
+@@ -1096,8 +1139,9 @@
+           f2(2)  = -12.d0*cz
+           do l = 3,lsup
+              plm(l) =(cz*(2*l -1)*plm(l-1) -(l+1)*plm(l-2))/(l -2)
+-             f1(l) =-(2*l-8 +l*(l-1)*(1.d0 -cz*cz))*plm(l)+ &
+-                  (2*l+4)*cz*plm(l-1)
++          enddo
++          do l = 3,lsup
++             f1(l) =-(2*l-8 +l*(l-1)*(1.d0 -cz*cz))*plm(l)+ (2*l+4)*cz*plm(l-1)
+              f2(l) = 4.d0*(-(l-1)*cz*plm(l) +(l+2)*plm(l-1))
+           enddo
+           qq = sum(cls(linf:lsup,smwEE)*f1(linf:lsup) -cls(linf:lsup,smwBB)*f2(linf:lsup))
+@@ -1126,8 +1170,9 @@
+           f2(2)  = -12.d0*cz
+           do l = 3,lsup
+              plm(l) =(cz*(2*l -1)*plm(l-1) -(l+1)*plm(l-2))/(l -2)
+-             f1(l) =-(2*l-8 +l*(l-1)*(1.d0 -cz*cz))*plm(l)+ &
+-                  (2*l+4)*cz*plm(l-1)
++          enddo
++          do l = 3,lsup
++             f1(l) =-(2*l-8 +l*(l-1)*(1.d0 -cz*cz))*plm(l)+ (2*l+4)*cz*plm(l-1)
+              f2(l) = 4.d0*(-(l-1)*cz*plm(l) +(l+2)*plm(l-1))
+           enddo
+           qq = sum(cls(linf:lsup,smwEE)*f1(linf:lsup) -cls(linf:lsup,smwBB)*f2(linf:lsup))
+@@ -1167,21 +1212,27 @@
+     integer  :: i,j,l,ju,jq
+     real(dp) :: tq,tu,cz
+ 
++    real(dp)    ,allocatable    :: pl_vector (:)       !new vector
++
+     cls(2:lsup,smwTE) =clsin(2:lsup,smwTE)*clnorm(2:lsup,smwTE)
+     cls(2:lsup,smwTB) =clsin(2:lsup,smwTB)*clnorm(2:lsup,smwTB)
+ 
+ 
+-    do i=1,ntemp
++    !$omp parallel do private(cz,pl_vector,j,l,tq,tu,jq,ju) shared(cov)
++    do i=1,ntemp ! perhaps we can split..
++
++       allocate(pl_vector(lsup)) !alocate memory - we use this instead pl and plm global variables..
+ ! QT
++       pl_vector(1) = 0.d0
+        do j=1,nq
+           cz = sum(Qvec(:,j)*Tvec(:,i))
+-          plm(1) = 0.d0
+-          plm(2) = 3.d0*(1.d0 -cz*cz)
++          !pl_vector(1) = 0.d0
++          pl_vector(2) = 3.d0*(1.d0 -cz*cz)
+           do l = 3,lsup
+-             plm(l) =(cz*(2*l -1)*plm(l-1) -(l+1)*plm(l-2))/(l-2)
++             pl_vector(l) =(cz*(2*l -1)*pl_vector(l-1) -(l+1)*pl_vector(l-2))/(l-2)
+           enddo
+-          tq = -sum(cls(linf:lsup,smwTE)*plm(linf:lsup))
+-          tu = -sum(cls(linf:lsup,smwTB)*plm(linf:lsup))
++          tq = -sum(cls(linf:lsup,smwTE)*pl_vector(linf:lsup))
++          tu = -sum(cls(linf:lsup,smwTB)*pl_vector(linf:lsup))
+ 
+           jq = j +ntemp
+ 
+@@ -1190,15 +1241,16 @@
+        enddo
+ 
+ !UT
++       pl_vector(1) = 0.d0
+        do j=1,nu
+           cz = sum(Uvec(:,j)*Tvec(:,i))
+-          plm(1) = 0.d0
+-          plm(2) = 3.d0*(1.d0 -cz*cz)
++          !pl_vector(1) = 0.d0
++          pl_vector(2) = 3.d0*(1.d0 -cz*cz)
+           do l = 3,lsup
+-             plm(l) =(cz*(2*l -1)*plm(l-1) -(l+1)*plm(l-2))/(l-2)
++             pl_vector(l) =(cz*(2*l -1)*pl_vector(l-1) -(l+1)*pl_vector(l-2))/(l-2)
+           enddo
+-          tq = -sum(cls(linf:lsup,smwTE)*plm(linf:lsup))
+-          tu = -sum(cls(linf:lsup,smwTB)*plm(linf:lsup))
++          tq = -sum(cls(linf:lsup,smwTE)*pl_vector(linf:lsup))
++          tu = -sum(cls(linf:lsup,smwTB)*pl_vector(linf:lsup))
+ 
+           ju = j +ntemp +nq
+ 
+@@ -1206,6 +1258,8 @@
+ 
+        enddo
+ 
++       deallocate(pl_vector)
++
+     end do
+ 
+     if (present(symmetrize) .and. symmetrize) then
+@@ -1346,9 +1400,16 @@
+     integer  ,intent(in)          :: linf ,lsup
+     real(dp) ,intent(inout)       :: NCM(:,:)
+     logical ,intent(in) ,optional :: project_mondip
++    real(dp)    ,allocatable    :: pl_vector (:)       !new vector
++    real(dp)    ,allocatable    :: f1_vector (:)
++    real(dp)    ,allocatable    :: f2_vector (:)
++    real(dp)    ,allocatable    :: ncm_vector (:)
++    
+ 
+     integer  :: i ,j ,l ,iu ,iq ,ju ,jq
+-    real(dp) :: tt ,qq ,uu ,tq ,tu ,qu ,cz ,c1c2 ,s1s2 ,c1s2 ,s1c2 ,ct0 ,ct1
++    integer  :: omp_num_threads_bak,omp_parallel_section_pl,omp_main_loop_pl,omp_inner_loop_pl
++    LOGICAL  :: omp_nested_bak
++    real(dp) :: tt ,qq ,uu ,tq ,tu ,qu ,cz ,c1c2 ,s1s2 ,c1s2 ,s1c2 ,ct0 ,ct1, res
+ 
+     ct0 = 0._dp
+     ct1 = 0._dp
+@@ -1362,70 +1423,176 @@
+ 
+     cls(2:lsup,:) =clsin(2:lsup,:)*clnorm(2:lsup,:)
+ 
++    print *, "Before: max_act_lev=", omp_get_max_active_levels(), &
++      ", num_thds=", omp_get_num_threads(), &
++      ", max_thds=", omp_get_max_threads(), &
++      ", get_nested=", omp_get_nested()
++
++    omp_num_threads_bak = omp_get_max_threads()
++    omp_nested_bak = omp_get_nested()
++
++    ! this should be 3 as there are three sections(?)
++    ! from obvious reasons, 1 is minimum..
++    omp_parallel_section_pl = MIN(3,omp_num_threads_bak)
++    omp_main_loop_pl =  MAX(FLOOR(SQRT(REAL(omp_num_threads_bak / omp_parallel_section_pl))),1)
++    print *, "omp_main_loop_pl=", omp_main_loop_pl
++    omp_inner_loop_pl = MAX((omp_num_threads_bak/omp_parallel_section_pl)/omp_main_loop_pl,1)
++    print *, "omp_inner_loop_pl=", omp_main_loop_pl
++
++    call omp_set_nested(.true.)
++    call omp_set_max_active_levels(3) ! we have 3 levels of paralelism
++    !call omp_set_dynamic(.false.)
++    call omp_set_num_threads(omp_main_loop_pl)
++
++    ! HOTSPOT
++
++    !$omp parallel do shared(NCM)
+     do i=1,ntemp
+-! TT 
++
++       call omp_set_num_threads(omp_parallel_section_pl)
++
++       !$omp parallel sections private(ncm_vector) shared(NCM)
++
++       ! TT =====================================
++       
++       !$omp section
++
++       allocate(ncm_vector(ntemp))
++       ncm_vector(:)=0
++
++       call omp_set_num_threads(omp_inner_loop_pl)
++
++       !$omp parallel do private(cz,tt,pl_vector) reduction(+:ncm_vector)
+        do j=i,ntemp
+           cz = sum(Tvec(:,j)*Tvec(:,i))
+-          pl(1) = cz
+-          pl(2) = 1.5d0*cz*cz -.5d0
++          allocate(pl_vector(lsup))
++          pl_vector(1) = cz
++          pl_vector(2) = 1.5d0*cz*cz -.5d0
++
+           do l = 3,lsup
+-             pl(l) =(cz*(2*l -1)*pl(l-1) -(l-1)*pl(l-2))/l
++             pl_vector(l) =(cz*(2*l -1)*pl_vector(l-1) -(l-1)*pl_vector(l-2))/l
+           enddo
+-          tt = sum(cls(linf:lsup,smwTT)*pl(linf:lsup)) 
+-          NCM(j,i) = NCM(j,i) +tt +ct0 +pl(1)*ct1
++
++          tt = sum(cls(linf:lsup,smwTT)*pl_vector(linf:lsup)) 
++          deallocate (pl_vector)
++
++          ncm_vector(j)=ncm_vector(j)+tt + ct0 + cz * ct1
+        enddo
++       !$omp end parallel do
+ 
+-! QT
++       !DIR$ SIMD
++       do j=i,ntemp
++         NCM(j,i)=NCM(j,i) + ncm_vector(j)
++       enddo
++
++       deallocate (ncm_vector)
++
++       ! QT ========================================
++
++       !$omp section
++
++       allocate(ncm_vector(nq))
++       ncm_vector(:)=0
++
++       call omp_set_num_threads(omp_inner_loop_pl)
++
++       !$omp parallel do private(cz,tq,tu,jq,pl_vector) reduction(+:ncm_vector)
+        do j=1,nq
+           cz = sum(Qvec(:,j)*Tvec(:,i))
+-          plm(1) = 0.d0
+-          plm(2) = 3.d0*(1.d0 -cz*cz)
++          allocate(pl_vector(lsup))
++          pl_vector(1) = 0.d0
++          pl_vector(2) = 3.d0*(1.d0 -cz*cz)
++
+           do l = 3,lsup
+-             plm(l) =(cz*(2*l -1)*plm(l-1) -(l+1)*plm(l-2))/(l-2)
++             pl_vector(l) =(cz*(2*l -1)*pl_vector(l-1) -(l+1)*pl_vector(l-2))/(l-2)
+           enddo
+-          tq = -sum(cls(linf:lsup,smwTE)*plm(linf:lsup))
+-          tu = -sum(cls(linf:lsup,smwTB)*plm(linf:lsup))
+ 
++          tq = -sum(cls(linf:lsup,smwTE)*pl_vector(linf:lsup))
++          tu = -sum(cls(linf:lsup,smwTB)*pl_vector(linf:lsup))
++          deallocate (pl_vector)
+           jq = j +ntemp
+ 
+-          NCM(jq,i) = NCM(jq,i) +tq*cos1%column(i)%row(jq) +tu*sin1%column(i)%row(jq)
++          ncm_vector(j) = ncm_vector(j) + tq*cos1%column(i)%row(jq)+tu*sin1%column(i)%row(jq)
+        enddo
++       !$omp end parallel do
+ 
+-!UT
++       !DIR$ SIMD
++       do j=1,nq
++         jq = j +ntemp
++         NCM(jq,i) = NCM(jq,i) + ncm_vector(j)
++       enddo
++
++       deallocate (ncm_vector)
++
++       ! UT ===============================================
++
++       !$omp section
++
++       allocate(ncm_vector(nu))
++       ncm_vector(:)=0
++
++       call omp_set_num_threads(omp_inner_loop_pl)
++
++       !$omp parallel do private(cz,tq,tu,ju,pl_vector) reduction(-:ncm_vector)
+        do j=1,nu
+           cz = sum(Uvec(:,j)*Tvec(:,i))
+-          plm(1) = 0.d0
+-          plm(2) = 3.d0*(1.d0 -cz*cz)
++          allocate(pl_vector(lsup))
++          pl_vector(1) = 0.d0
++          pl_vector(2) = 3.d0*(1.d0 -cz*cz)
++
+           do l = 3,lsup
+-             plm(l) =(cz*(2*l -1)*plm(l-1) -(l+1)*plm(l-2))/(l-2)
++             pl_vector(l) =(cz*(2*l -1)*pl_vector(l-1) -(l+1)*pl_vector(l-2))/(l-2)
+           enddo
+-          tq = -sum(cls(linf:lsup,smwTE)*plm(linf:lsup))
+-          tu = -sum(cls(linf:lsup,smwTB)*plm(linf:lsup))
+ 
++          tq = -sum(cls(linf:lsup,smwTE)*pl_vector(linf:lsup))
++          tu = -sum(cls(linf:lsup,smwTB)*pl_vector(linf:lsup))
++          deallocate (pl_vector)
+           ju = j +ntemp +nq
+ 
+-          NCM(ju,i) = NCM(ju,i) -tq*sin1%column(i)%row(ju) +tu*cos1%column(i)%row(ju)
++          ncm_vector(j) = ncm_vector(j) - tq*sin1%column(i)%row(ju)+tu*cos1%column(i)%row(ju)
+        enddo
++       !$omp end parallel do
+ 
+-    end do
++       !DIR$ SIMD
++       do j=1,nu
++         ju = j +ntemp +nq
++         NCM(ju,i) = NCM(ju,i) + ncm_vector(j)
++       enddo
++       
++       deallocate (ncm_vector)
++
++       !$omp end parallel sections
+ 
++    end do ! i=1 .. ntemp
++
++    call omp_set_num_threads(omp_num_threads_bak)
++    call omp_set_nested(omp_nested_bak)
++    
++
++    !$omp parallel do private(cz,pl_vector,f1_vector,f2_vector,qq,uu,qu,jq,iq,ju,c1c2,s1s2,c1s2,s1c2,j,l) shared(NCM)
+     do i = 1,nq
+-!QQ 
++
++       allocate(pl_vector(lsup))       !allocate memory - we don't want to use global vars shouldn't we change ntemp to lsup too??
++       allocate(f1_vector(lsup))
++       allocate(f2_vector(lsup))
++
++       !QQ 
+        do j = i,nq
+           cz = sum(Qvec(:,j)*Qvec(:,i))
+-          plm(1) = 0.d0
+-          plm(2) = 3.d0
+-          f1(2)  = 6.d0*(1d0+cz*cz)
+-          f2(2)  = -12.d0*cz
++          pl_vector(1) = 0.d0
++          pl_vector(2) = 3.d0
++          f1_vector(2)  = 6.d0*(1d0+cz*cz)
++          f2_vector(2)  = -12.d0*cz
+           do l = 3,lsup
+-             plm(l) =(cz*(2*l -1)*plm(l-1) -(l+1)*plm(l-2))/(l -2)
+-             f1(l) =-(2*l-8 +l*(l-1)*(1.d0 -cz*cz))*plm(l)+ &
+-                  (2*l+4)*cz*plm(l-1)
+-             f2(l) = 4.d0*(-(l-1)*cz*plm(l) +(l+2)*plm(l-1))
++             pl_vector(l) =(cz*(2*l -1)*pl_vector(l-1) -(l+1)*pl_vector(l-2))/(l -2)
+           enddo
+-          qq = sum(cls(linf:lsup,smwEE)*f1(linf:lsup) -cls(linf:lsup,smwBB)*f2(linf:lsup))
+-          uu = sum(cls(linf:lsup,smwBB)*f1(linf:lsup) -cls(linf:lsup,smwEE)*f2(linf:lsup))
+-          qu = sum((f1(linf:lsup) +f2(linf:lsup))*cls(linf:lsup,smwEB))
++          do l = 3,lsup
++             f1_vector(l) =-(2*l-8 +l*(l-1)*(1.d0 -cz*cz))*pl_vector(l)+ (2*l+4)*cz*pl_vector(l-1)
++             f2_vector(l) = 4.d0*(-(l-1)*cz*pl_vector(l) +(l+2)*pl_vector(l-1))
++          enddo
++          qq = sum(cls(linf:lsup,smwEE)*f1_vector(linf:lsup) -cls(linf:lsup,smwBB)*f2_vector(linf:lsup))
++          uu = sum(cls(linf:lsup,smwBB)*f1_vector(linf:lsup) -cls(linf:lsup,smwEE)*f2_vector(linf:lsup))
++          qu = sum((f1_vector(linf:lsup) +f2_vector(linf:lsup))*cls(linf:lsup,smwEB))
+ 
+           jq = j+ntemp
+           iq = i+ntemp
+@@ -1436,28 +1603,30 @@
+           s1c2 = sin1%column(iq)%row(jq)*cos2%column(iq)%row(jq)
+ 
+           NCM(jq,iq) = NCM(jq,iq) +qq*c1c2 +uu*s1s2 +qu*(c1s2+s1c2)
++          !todo: just collect terms and do reduction later
+ 
+        end do
+ 
+-!UQ 
++       !UQ 
+        do j=1,nu
+ 
+           cz = sum(Uvec(:,j)*Qvec(:,i))
+-          plm(1) = 0.d0
+-          plm(2) = 3.d0
+-          f1(2)  = 6.d0*(1d0+cz*cz)
+-          f2(2)  = -12.d0*cz
++          pl_vector(1) = 0.d0
++          pl_vector(2) = 3.d0
++          f1_vector(2)  = 6.d0*(1d0+cz*cz)
++          f2_vector(2)  = -12.d0*cz
+ 
+           do l = 3,lsup
+-             plm(l) =(cz*(2*l -1)*plm(l-1) -(l+1)*plm(l-2))/(l -2)
+-             f1(l) =-(2*l-8 +l*(l-1)*(1.d0 -cz*cz))*plm(l)+ &
+-                  (2*l+4)*cz*plm(l-1)
+-             f2(l) = 4.d0*(-(l-1)*cz*plm(l) +(l+2)*plm(l-1))
++             pl_vector(l) =(cz*(2*l -1)*pl_vector(l-1) -(l+1)*pl_vector(l-2))/(l -2)
++          enddo
++          do l = 3,lsup
++             f1_vector(l) =-(2*l-8 +l*(l-1)*(1.d0 -cz*cz))*pl_vector(l)+ (2*l+4)*cz*pl_vector(l-1)
++             f2_vector(l) = 4.d0*(-(l-1)*cz*pl_vector(l) +(l+2)*pl_vector(l-1))
+           enddo
+ 
+-          qq = sum(cls(linf:lsup,smwEE)*f1(linf:lsup) -cls(linf:lsup,smwBB)*f2(linf:lsup))
+-          uu = sum(cls(linf:lsup,smwBB)*f1(linf:lsup) -cls(linf:lsup,smwEE)*f2(linf:lsup))
+-          qu = sum((f1(linf:lsup) +f2(linf:lsup))*cls(linf:lsup,smwEB))
++          qq = sum(cls(linf:lsup,smwEE)*f1_vector(linf:lsup) -cls(linf:lsup,smwBB)*f2_vector(linf:lsup))
++          uu = sum(cls(linf:lsup,smwBB)*f1_vector(linf:lsup) -cls(linf:lsup,smwEE)*f2_vector(linf:lsup))
++          qu = sum((f1_vector(linf:lsup) +f2_vector(linf:lsup))*cls(linf:lsup,smwEB))
+ 
+           ju = j+ntemp+nq
+           iq = i+ntemp
+@@ -1468,26 +1637,51 @@
+           s1c2 = sin1%column(iq)%row(ju)*cos2%column(iq)%row(ju)
+ 
+           NCM(ju,iq) = NCM(ju,iq) -qq*s1c2 +uu*c1s2 +qu*(c1c2 -s1s2)
++          !todo: just collect terms and do reduction later
+        end do
+-    end do
+ 
++       deallocate (pl_vector)
++       deallocate (f1_vector)
++       deallocate (f2_vector)
++
++    end do ! i=1 .. nq
++    !$omp end parallel do
++
++    !$omp parallel do private(cz,pl_vector,f1_vector,f2_vector,qq,uu,qu,ju,iu,c1c2,s1s2,c1s2,s1c2,j,l) shared(NCM)
+     do i =1,nu
++
++       allocate(pl_vector(lsup))
++       allocate(f1_vector(lsup))
++       allocate(f2_vector(lsup))
+ !UU 
++       !_omp parallel do private(cz,pl_vector,f1_vector,f2_vector,qq,uu,qu,ju,iu,c1c2,s1s2,c1s2,s1c2,j,l) shared(NCM)
+        do j=i,nu
++
++          !allocate(pl_vector(lsup))
++          !allocate(f1_vector(lsup))
++          !allocate(f2_vector(lsup))
++
+           cz = sum(Uvec(:,j)*Uvec(:,i))
+-          plm(1) = 0.d0
+-          plm(2) = 3.d0
+-          f1(2)  = 6.d0*(1d0+cz*cz)
+-          f2(2)  = -12.d0*cz
++          pl_vector(1) = 0.d0
++          pl_vector(2) = 3.d0
++          f1_vector(2)  = 6.d0*(1d0+cz*cz)
++          f2_vector(2)  = -12.d0*cz
+           do l = 3,lsup
+-             plm(l) =(cz*(2*l -1)*plm(l-1) -(l+1)*plm(l-2))/(l -2)
+-             f1(l) =-(2*l-8 +l*(l-1)*(1.d0 -cz*cz))*plm(l)+ &
+-                  (2*l+4)*cz*plm(l-1)
+-             f2(l) = 4.d0*(-(l-1)*cz*plm(l) +(l+2)*plm(l-1))
++             pl_vector(l) =(cz*(2*l -1)*pl_vector(l-1) -(l+1)*pl_vector(l-2))/(l -2)
+           enddo
+-          qq = sum(cls(linf:lsup,smwEE)*f1(linf:lsup) -cls(linf:lsup,smwBB)*f2(linf:lsup))
+-          uu = sum(cls(linf:lsup,smwBB)*f1(linf:lsup) -cls(linf:lsup,smwEE)*f2(linf:lsup))
+-          qu = sum((f1(linf:lsup) +f2(linf:lsup))*cls(linf:lsup,smwEB))
++          do l = 3,lsup
++             f1_vector(l) =-(2*l-8 +l*(l-1)*(1.d0 -cz*cz))*pl_vector(l)+ (2*l+4)*cz*pl_vector(l-1)
++             f2_vector(l) = 4.d0*(-(l-1)*cz*pl_vector(l) +(l+2)*pl_vector(l-1))
++          enddo
++
++          !deallocate (pl_vector)
++
++          qq = sum(cls(linf:lsup,smwEE)*f1_vector(linf:lsup) -cls(linf:lsup,smwBB)*f2_vector(linf:lsup))
++          uu = sum(cls(linf:lsup,smwBB)*f1_vector(linf:lsup) -cls(linf:lsup,smwEE)*f2_vector(linf:lsup))
++          qu = sum((f1_vector(linf:lsup) +f2_vector(linf:lsup))*cls(linf:lsup,smwEB))
++
++          !deallocate (f1_vector)
++          !deallocate (f2_vector)
+ 
+ 
+           ju = j+ntemp+nq
+@@ -1500,10 +1694,17 @@
+ 
+           NCM(ju,iu) = NCM(ju,iu) +qq*s1s2 +uu*c1c2 -qu*(c1s2 +s1c2)
+        end do
++
++       deallocate (pl_vector)
++       deallocate (f1_vector)
++       deallocate (f2_vector)
++
+     end do
++    !$omp end parallel do
+ 
+   end subroutine update_ncvm
+ 
++  !DEC$ ATTRIBUTES INLINE :: get_rotation_angle
+   pure subroutine get_rotation_angle(r1,r2,a12,a21)
+ !computes TWICE the rotation angle
+ 
+@@ -1518,7 +1719,12 @@
+     real(dp) ,dimension(3) :: r12,r1star,r2star
+     real(dp)               :: mod
+ 
+-    call ext_prod(r1,r2,r12)
++    !call ext_prod(r1,r2,r12)
++
++    r12(1) = r1(2)*r2(3) - r1(3)*r2(2)
++    r12(2) = r1(3)*r2(1) - r1(1)*r2(3)
++    r12(3) = r1(1)*r2(2) - r1(2)*r2(1)
++
+     mod = sqrt(sum(r12*r12))
+     if(mod.lt.1.d-8) then !same or opposite pixels
+        a12 = 0.d0
+@@ -1528,7 +1734,13 @@
+     end if
+     r12 = r12/mod
+ 
+-    call ext_prod(zz,r1,r1star)
++    !call ext_prod(zz,r1,r1star)
++
++    r1star(1) = zz(2)*r1(3) - zz(3)*r1(2)
++    r1star(2) = zz(3)*r1(1) - zz(1)*r1(3)
++    !r1star(3) = zz(1)*r1(2) - zz(2)*r1(1)      ! not used..
++
++
+     r1star(3) = 0.d0
+     mod = sqrt(sum(r1star*r1star))
+     if(mod.lt.1.d-8) then   !r1 is at a pole            
+@@ -1537,7 +1749,13 @@
+     end if
+     r1star = r1star/mod
+ 
+-    call ext_prod(zz,r2,r2star)
++    !call ext_prod(zz,r2,r2star)
++
++    r2star(1) = zz(2)*r2(3) - zz(3)*r2(2)
++    r2star(2) = zz(3)*r2(1) - zz(1)*r2(3)
++    !r2star(3) = zz(1)*r2(2) - zz(2)*r2(1)      ! not used..
++
++
+     r2star(3) = 0.d0
+     mod = sqrt(sum(r2star*r2star))
+     if(mod.lt.1.d-8) then   !r2 is at a pole            
