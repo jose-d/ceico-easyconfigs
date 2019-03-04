@@ -1,3 +1,8 @@
+# in libclik_mkl.so is created already in configure phase, and it would be deleted
+# by Easybuild doing installdir cleanup.
+#
+# - 1.3.2019, J. Dvoracek (Institute of Physics | Czech Academy of Sciences, www.fzu.cz
+#
 diff -Nru plc-2.0_orig/waf_tools/any_lapack.py plc-2.0/waf_tools/any_lapack.py
 --- plc-2.0_orig/waf_tools/any_lapack.py	2015-06-03 14:54:27.000000000 +0200
 +++ plc-2.0/waf_tools/any_lapack.py	2018-12-07 19:04:30.390774000 +0100
