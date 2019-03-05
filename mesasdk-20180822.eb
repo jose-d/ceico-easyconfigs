@@ -16,15 +16,15 @@ sources = ['%(name)s-x86_64-linux-%(version)s.tar.gz']
 source_urls = ['https://github.com/jose-d/mesa-sdk-binary-mirror/releases/download/%(version)s/']
 
 checksums = [
-    '54e12425f27ecf15db7cf05a4058bd57bc47adc0bc4d82c993c1ca56945ad10f', # mesasdk-x86_64-linux-20180822.tar.gz
+    '54e12425f27ecf15db7cf05a4058bd57bc47adc0bc4d82c993c1ca56945ad10f',  # mesasdk-x86_64-linux-20180822.tar.gz
 ]
 
 
 dependencies = [
     ('binutils', '2.30'),
-    ('Perl','5.28.0'),
-    ('X11','20180604'),
-    ('zlib','1.2.11'),
+    ('Perl', '5.28.0'),
+    ('X11', '20180604'),
+    ('zlib', '1.2.11'),
 ]
 
 # exported paths are extracted from script mesasdk_init.sh:
