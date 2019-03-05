@@ -7,16 +7,12 @@ homepage = 'https://www.cs.virginia.edu/stream/'
 description = """The STREAM benchmark is a simple synthetic benchmark program that measures sustainable
  memory bandwidth (in MB/s) and the corresponding computation rate for simple vector kernels."""
 
-toolchain = {'name': 'GCCcore', 'version': '7.3.0'}
+toolchain = {'name': 'GCC', 'version': '8.2.0-2.31.1'}
 toolchainopts = {'openmp': True}
 
 source_urls = ['https://www.cs.virginia.edu/stream/FTP/Code/']
 sources = [{'download_filename': '%(namelower)s.c', 'filename': 'stream-%(version)s.c'}]
 checksums = ['a52bae5e175bea3f7832112af9c085adab47117f7d2ce219165379849231692b']
-
-builddependencies = [
-    ('binutils', '2.30'),
-]
 
 skipsteps = ['source']
 
