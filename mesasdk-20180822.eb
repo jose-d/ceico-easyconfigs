@@ -1,0 +1,49 @@
+easyblock = 'Tarball'
+
+name = 'mesasdk'
+version = '20180822'
+
+homepage = 'http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk'
+description = """
+The MESA SDK is a collection of compilers and run-time libraries 
+that make it easy to install and use the MESA stellar evolution code.
+"""
+
+toolchain = {'name': 'GCCcore', 'version': '7.3.0'}
+
+sources = ['%(name)s-x86_64-linux-%(version)s.tar.gz']
+# we use mirror, bcs official download site uses strange bots 'protection'
+source_urls = ['https://github.com/jose-d/mesa-sdk-binary-mirror/releases/download/%(version)s/']
+
+checksums = [
+    '54e12425f27ecf15db7cf05a4058bd57bc47adc0bc4d82c993c1ca56945ad10f', # mesasdk-x86_64-linux-20180822.tar.gz
+]
+
+
+dependencies = [
+    ('binutils', '2.30'),
+    ('Perl','5.28.0'),
+    ('X11','20180604'),
+    ('zlib','1.2.11'),
+]
+
+# exported paths are extracted from script mesasdk_init.sh:
+modextravars = {
+    'MESASDK_ROOT': '%(installdir)s',
+    'PGPLOT_DIR': '%(installdir)s/pgplot',
+    'VALGRIND_LIB': '%(installdir)s/lib/valgrind',
+}
+
+sanity_check_commands = [
+    # this scripts actually does some initializations and checks:
+    'bash -c "source %(installdir)s/bin/mesasdk_init.sh"',
+]
+
+sanity_check_paths = {
+    'files': [
+        'bin/gfortran',
+    ],
+    'dirs': ["."]
+}
+
+moduleclass = 'astro'
