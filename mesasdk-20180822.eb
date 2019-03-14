@@ -19,7 +19,6 @@ checksums = [
     '54e12425f27ecf15db7cf05a4058bd57bc47adc0bc4d82c993c1ca56945ad10f',  # mesasdk-x86_64-linux-20180822.tar.gz
 ]
 
-
 dependencies = [
     ('binutils', '2.30'),
     ('Perl', '5.28.0'),
@@ -27,7 +26,7 @@ dependencies = [
     ('zlib', '1.2.11'),
 ]
 
-# exported paths are extracted from script mesasdk_init.sh:
+# exported paths were extracted from script mesasdk_init.sh:
 modextravars = {
     'MESASDK_ROOT': '%(installdir)s',
     'PGPLOT_DIR': '%(installdir)s/pgplot',
