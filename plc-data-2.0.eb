@@ -10,10 +10,7 @@ toolchain = {'name': 'dummy', 'version': 'dummy'}
 
 source_urls = ['http://pla.esac.esa.int/pla/aio']
 sources = ['product-action?COSMOLOGY.FILE_ID=COM_Likelihood_Data-baseline_R2.00.tar.gz']
-
-checksums = [
-    '7c62c5afc105bff28c2da3eddb870b8180536d30e31c4d419b307ad3996e17ab',
-]
+checksums = ['7c62c5afc105bff28c2da3eddb870b8180536d30e31c4d419b307ad3996e17ab']
 
 modextravars = {
     'PLANCK_2015_DATA': '%(installdir)s',  # dir with unpacked COM_Likelihood_Data-baseline_R2.00.tar.gz

@@ -19,8 +19,8 @@ patches = [
 
 checksums = [
     'cab9917723b0eb69e7b2521bb074aaabb412aac6eb36e902cd9372db67ac328e',  # product-action?COSMOLOGY.FILE_ID=COM_Likelihood_Code-v2.0_R2.00.tar.bz2
-    '226695920af84620d0b31bf4afecbf5bbd01e709c5c668da2d2ebcc4e1ceef0a',  # plc-2.0-fix-build.patch
-    '8e403ddef94ca3ae2851962418bfd4f189398f077438120915eb995be381ce4a',  # plc-2.0-fix-openmp-flags.patch
+    'fdbc8e221e5c49f6df70c6e9505ca9f25332ffe2483633999e524ecddb4fe67c',  # plc-2.0-fix-build.patch
+    '99a4c310b37f1a3d597d7a47b2f2ac714b12d7bcb00b8ad6a97464f0a454428c',  # plc-2.0-fix-openmp-flags.patch
     'f6d62115884c83cfa29b191b59c4dec1500abf14980d05a7bb4d2e6bc4a72cb7',  # plc-2.0-add-avx-flags.patch
 ]
 
