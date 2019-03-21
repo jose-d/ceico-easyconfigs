@@ -35,6 +35,7 @@ dependencies = [
     ('CFITSIO', '3.45'),
     ('pyfits', '3.5', '-Python-2.7.15'),
     ('cURL', '7.60.0' ),
+    ('plc-data', '2.0' , [], True),
 ]
 
 configopts = "--icc " 					# Do not test for gcc and only use icc
