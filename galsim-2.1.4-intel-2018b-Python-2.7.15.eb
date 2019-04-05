@@ -1,0 +1,61 @@
+easyblock = 'PythonBundle'
+
+name = 'GalSim'
+version = '2.1.4'
+versionsuffix = '-Python-%(pyver)s'
+
+homepage = 'https://github.com/GalSim-developers/GalSim'
+description = """The modular galaxy image simulation toolkit"""
+
+toolchain = {'name': 'intel', 'version': '2018b'}
+
+dependencies = [
+    ('Python', '2.7.15'),
+    ('FFTW', '3.3.8'),
+    ('pybind11', '2.2.4', versionsuffix),
+    ('future', '0.16.0', versionsuffix),
+    ('Eigen', '3.3.7', '', True),
+    ('libffi','3.2.1'), 
+    ('astropy','2.0.12', versionsuffix),
+    ('PyYAML','3.13', versionsuffix),
+]
+
+use_pip = True
+download_dep_fail = True
+
+exts_list = [
+    ('LSSTDESC.Coord', '1.1.0', {
+        'modulename': 'coord',
+        'source_urls': ['https://pypi.python.org/packages/source/L/LSSTDESC.Coord/'],
+        'checksums': ['9bc61546e261edd4eb434e8d58b7be1c2a6729b41e9c65278128458a210bd7d0'],
+    }),
+    ('starlink-pyast', '3.11.0', {
+        'modulename': 'starlink',
+        'source_urls': ['https://pypi.python.org/packages/source/S/starlink-pyast/'],
+        'checksums': ['77d5a4117f3a11a34345d68a9831a3e0228d1b9625442a6f4d79ddb5b8b56b87'],
+    }),
+    ('cffi', '1.12.2', {
+        'source_urls': ['https://pypi.python.org/packages/source/C/cffi/'],
+        'checksums': ['e113878a446c6228669144ae8a56e268c91b7f1fafae927adc4879d9849e0ea7'],
+    }),
+    ('pycparser', '2.19', {
+        'source_urls': ['https://pypi.python.org/packages/source/P/pycparser/'],
+        'checksums': ['a988718abfad80b6b157acce7bf130a30876d27603738ac39f140993246b25b3'],
+    }),
+    (name, version, {
+        'patches': ['galsim-2.1.4-pybind-include-dir-fix.patch'],
+        'source_urls': ['https://pypi.python.org/packages/source/%(nameletter)s/%(name)s'],
+        'checksums': [
+            '4238a69acd978305cb947b587d109b91abab30615e67d0350c84b264f5ce6859',  # GalSim-2.1.4.tar.gz
+            # galsim-2.1.4-pybind-include-dir-fix.patch
+            '969cb6c6ae55068590eca832da463b25e640884b21b8201b524f01440fb052fc',
+        ],
+    }),
+]
+
+sanity_check_paths = {
+    'files': [],
+    'dirs': ['lib/python%(pyshortver)s/site-packages/galsim'],
+}
+
+moduleclass = 'astro'
