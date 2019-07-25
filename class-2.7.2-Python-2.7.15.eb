@@ -1,0 +1,49 @@
+easyblock = 'MakeCp'
+
+name = 'class'
+version = '2.7.2'
+versionsuffix = '-Python-%(pyver)s'
+
+homepage = 'http://class-code.net/'
+description = """The purpose of CLASS is to simulate the evolution of linear
+ perturbations in the universe and to compute CMB and large scale structure observables"""
+
+toolchain = {'name': 'foss', 'version': '2019a'}
+
+source_urls = ['https://github.com/lesgourg/class_public/archive/']
+sources = ['v%(version)s.tar.gz']
+patches = ['class-2.7.2.patch']
+checksums = [
+    '06a0debf48fc6f06e6e8c0b82c36929d9475874f2773de57d7cea4d57f1467c3',  # v2.7.2.tar.gz
+    '8e16436cf65b4c15b9f6606f5dc84b9d05a3a2fb4871d09db8406b7ab735994d',  # class-2.7.2.patch
+]
+
+dependencies = [
+    ('Python', '2.7.15'),
+    ('SciPy-bundle', '2019.03'),
+]
+
+unpack_options = '--strip 1'
+buildininstalldir = 'true'
+
+files_to_copy = [
+    (['class','CPU.py'], 'bin'),
+    (['libclass.a',],'lib'),
+]
+
+modextrapaths = {'PYTHONPATH': 'lib/python2.7/site-packages'}
+
+sanity_check_paths = {
+    'files': [
+        'lib/python2.7/site-packages/classy.so',
+        'lib/libclass.a',
+        ],
+    'dirs': []
+}
+
+sanity_check_commands = [
+    "python -c 'import classy;'",
+    "class explanatory.ini"
+]
+
+moduleclass = 'astro'

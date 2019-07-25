@@ -1,0 +1,35 @@
+As related Easyconfig builds class in installdir, the patch of Makefile ensures that
+python files root will be in in installdir itself.
+Defined root in explanatory.ini fixes this example run which acts as a sanity_check.
+Josef Dvoracek | Institute of Physics | Czech Academy of Sciences | 2019-07-25
+
+diff -Nru ./class_public-2.7.2_orig/explanatory.ini ./class_public-2.7.2/explanatory.ini
+--- ./class_public-2.7.2_orig/explanatory.ini	2019-04-11 17:23:41.000000000 +0200
++++ ./class_public-2.7.2/explanatory.ini	2019-07-25 18:27:17.916295294 +0200
+@@ -779,7 +779,7 @@
+     where N is the first available integer number, starting from 00, to avoid
+     erasing the output of previous runs)
+ 
+-#root = output/test_
++root = output/test_
+ 
+ 7b) do you want headers at the beginning of each output file (giving precisions
+     on the output units/ format) ? If 'headers' set to something containing the
+diff -Nru ./class_public-2.7.2_orig/Makefile ./class_public-2.7.2/Makefile
+--- ./class_public-2.7.2_orig/Makefile	2019-04-11 17:23:41.000000000 +0200
++++ ./class_public-2.7.2/Makefile	2019-07-25 17:03:48.108697000 +0200
+@@ -182,12 +182,13 @@
+ 	tar czvf class.tar.gz $(C_ALL) $(H_ALL) $(PRE_ALL) $(INI_ALL) $(MISC_FILES) $(HYREC) $(PYTHON_FILES)
+ 
+ classy: libclass.a python/classy.pyx python/cclassy.pxd
++
+ ifdef OMPFLAG
+ 	cp python/setup.py python/autosetup.py
+ else
+ 	grep -v "lgomp" python/setup.py > python/autosetup.py
+ endif
+-	cd python; export CC=$(CC); $(PYTHON) autosetup.py install || $(PYTHON) autosetup.py install --user
++	cd python; export CC=$(CC); $(PYTHON) autosetup.py install --prefix=..
+ 	rm python/autosetup.py
+ 
+ clean: .base
