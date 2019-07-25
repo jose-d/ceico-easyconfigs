@@ -27,8 +27,8 @@ unpack_options = '--strip 1'
 buildininstalldir = 'true'
 
 files_to_copy = [
-    (['class','CPU.py'], 'bin'),
-    (['libclass.a',],'lib'),
+    (['class', 'CPU.py'], 'bin'),
+    (['libclass.a', ], 'lib'),
 ]
 
 modextrapaths = {'PYTHONPATH': 'lib/python2.7/site-packages'}
@@ -37,8 +37,7 @@ sanity_check_paths = {
     'files': [
         'lib/python2.7/site-packages/classy.so',
         'lib/libclass.a',
-        ],
-    'dirs': []
+    ],
 }
 
 sanity_check_commands = [
