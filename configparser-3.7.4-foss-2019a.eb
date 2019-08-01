@@ -1,0 +1,27 @@
+easyblock = 'PythonBundle'
+
+name = 'configparser'
+version = '3.7.4'
+
+homepage = 'FOOOO'
+description = """
+BAAAR
+"""
+
+toolchain = {'name': 'foss', 'version': '2019a'}
+
+multi_deps = {'Python': ['3.7.2', '2.7.15']}
+
+exts_list = [
+    (name, version, {
+        'source_urls': ['https://pypi.python.org/packages/source/C/configparser/'],
+        'checksums': ['da60d0014fd8c55eb48c1c5354352e363e2d30bbf7057e5e171a468390184c75'],
+    }),
+]
+
+sanity_check_paths = {
+    'files': [],
+    'dirs': ['lib/python%(pyshortver)s/site-packages/configparser-%(version)s-py%(pyshortver)s.egg'],
+}
+
+moduleclass = 'lib'
