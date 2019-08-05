@@ -1,12 +1,12 @@
 easyblock = 'PythonBundle'
 
 name = 'astropy'
-version = '3.2.1'
+version = '2.0.14'
 
 homepage = 'http://www.astropy.org/'
 description = """The Astropy Project is a community effort to develop 
-a single core package for Astronomy in Python and foster interoperability 
-between Python astronomy packages."""
+ a single core package for Astronomy in Python and foster interoperability 
+ between Python astronomy packages."""
 
 toolchain = {'name': 'foss', 'version': '2019a'}
 
@@ -14,21 +14,20 @@ multi_deps = {'Python': ['3.7.2', '2.7.15']}
 
 dependencies = [
     ('SciPy-bundle', '2019.03'),
-    ('configparser', '3.7.4'),
 ]
 
 use_pip = True
 
 exts_list = [
-    ('astropy-helpers', version, {
+    ('astropy-helpers', '2.0.10', {
         'source_urls': ['https://pypi.python.org/packages/source/A/astropy-helpers/'],
-        'checksums': ['46edef2a3cc48cffe29e127eab173cadde52375875fc60cff070c144b7f39dce'],
+        'checksums': ['c5ca146e2b8607087f907b5cd1c5aabb0854cca0df43043a38aea1757e5eb65c'],
     }),
     (name, version, {
         'patches': ['astropy-ah_no_auto_use.patch'],
         'source_urls': ['https://pypi.python.org/packages/source/A/astropy/'],
         'checksums': [
-            '706c0457789c78285e5464a5a336f5f0b058d646d60f4e5f5ba1f7d5bf424b28',  # astropy-3.2.1.tar.gz
+            '618807068609a4d8aeb403a07624e9984f566adc0dc0f5d6b477c3658f31aeb6',  # astropy-2.0.14.tar.gz
             'fb339ff90fff8ed760b5ea9b8b65be3babb355f956a5588fd7e2e2656b4a7ca8',  # astropy-ah_no_auto_use.patch
         ],
     }),
