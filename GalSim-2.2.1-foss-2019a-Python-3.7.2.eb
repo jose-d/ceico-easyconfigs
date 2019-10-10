@@ -1,0 +1,53 @@
+easyblock = 'PythonBundle'
+
+name = 'GalSim'
+version = '2.2.1'
+versionsuffix = '-Python-%(pyver)s'
+
+homepage = 'https://github.com/GalSim-developers/GalSim'
+description = """The modular galaxy image simulation toolkit"""
+
+toolchain = {'name': 'foss', 'version': '2019a'}
+
+dependencies = [
+    ('Python', '3.7.2'), #OK
+    ('SciPy-bundle', '2019.03'),
+    ('FFTW', '3.3.8'),	#OK
+    ('pybind11', '2.4.2', versionsuffix),
+    ('Eigen', '3.3.7', '', True),
+    ('libffi','3.2.1'),
+    ('astropy','2.0.14'),
+    ('PyYAML','5.1'),
+]
+
+use_pip = True
+download_dep_fail = True
+
+exts_list = [
+    ('LSSTDESC.Coord', '1.2.0', {
+        'modulename': 'coord',
+        'source_urls': ['https://pypi.python.org/packages/source/L/LSSTDESC.Coord/'],
+        'checksums': ['8bba211e1f58ef92829b39e053b7660b975645a6047a9e7e1d0932c5326a391b'],
+    }),
+    ('starlink-pyast', '3.12.3', {
+        'modulename': 'starlink',
+        'source_urls': ['https://pypi.python.org/packages/source/S/starlink-pyast/'],
+        'checksums': ['adad930f104eab923640042218e5819a14446d06635cf5d43edd64f9e5e58630'],
+    }),
+    (name, version, {
+        'patches': ['GalSim-2.2.1-pybind-include-dir-fix.patch'],
+        'source_urls': ['https://pypi.python.org/packages/source/%(nameletter)s/%(name)s'],
+        'checksums': [
+            'f40ae4d1d8261e8f9c2e3734a3b22a03bc898f292e6604d02985bbe381936d79',  # GalSim-2.2.1.tar.gz
+            # GalSim-2.2.1-pybind-include-dir-fix.patch
+            '4a5b5204edfd9c67f2d8f141e197058b3821bb03e338577649857aa86a4405cc',
+        ],
+    }),
+]
+
+sanity_check_paths = {
+    'files': [],
+    'dirs': ['lib/python%(pyshortver)s/site-packages/galsim'],
+}
+
+moduleclass = 'astro'

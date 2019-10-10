@@ -1,0 +1,20 @@
+# By default, galsim would search pybind11 header files using its get_include() function.
+# the current implementation would not work for the EasyBuild location of pybind11 .h files.
+# We can expect the right path in $EBROOTPYBIND11 env variable, so let's use it.
+#
+# - 2.4.2019, J. Dvoracek (Institute of Physics | Czech Academy of Sciences, www.fzu.cz
+#
+diff -Nru ./GalSim-2.2.1.orig/setup.py ./GalSim-2.2.1/setup.py
+--- GalSim-2.2.1/setup.py.orig		2019-09-09 16:04:22.000000000 +0200
++++ GalSim-2.2.1/setup.py		2019-10-10 12:52:04.773277432 +0200
+@@ -687,8 +687,10 @@
+     import pybind11
+     print('PyBind11 is version ',pybind11.__version__)
+     print('Looking for pybind11 header files: ')
++    env = dict(os.environ)
+     locations = [pybind11.get_include(user=True),
+                  pybind11.get_include(user=False),
++                 env['EBROOTPYBIND11']+"/include",
+                  '/usr/include',
+                  '/usr/local/include',
+                  None]
