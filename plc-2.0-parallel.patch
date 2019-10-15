@@ -1,4 +1,4 @@
---- /home/users/jose/projects/plc_original/plc-2.0/src/bflike/bflike_smw.f90	2014-10-13 16:16:40.000000000 +0200
+--- ./plc-2.0/src/bflike/bflike_smw.f90	2014-10-13 16:16:40.000000000 +0200
 +++ ./plc-2.0/src/bflike/bflike_smw.f90	2019-02-26 19:19:10.931412000 +0100
 @@ -285,6 +285,7 @@
  

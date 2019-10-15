@@ -23,23 +23,17 @@ dependencies = [
     ('SciPy-bundle', '2019.03'),
     ('GTK+', '3.24.8'),
     ('Boost', '1.70.0'),
-    ('matplotlib', '3.0.3',versionsuffix),
-    ('sympy','1.4'),
-    ('git','2.21.0'),
-    ('gtkmm','3.24.1'),
-    ('SQLite','3.27.2'),
+    ('matplotlib', '3.0.3', versionsuffix),
+    ('sympy', '1.4'),
+    ('git', '2.21.0'),
+    ('gtkmm', '3.24.1'),
+    ('SQLite', '3.27.2'),
 ]
 
 osdependencies = [
     ('texlive')
 ]
 
-#-DBoost_NO_BOOST_CMAKE=TRUE -DCMAKE_INSTALL_PREFIX=../install
-#configure_cmd = "cmake -DBoost_NO_BOOST_CMAKE=TRUE"
-
-# The sanity test MUST be tuned before going production and submitting your contribution to upstream git repositories
-# -> sure.
-# TBD.
 sanity_check_paths = {
     'files': ['bin/cadabra2-gtk'],
     'dirs': ["."]

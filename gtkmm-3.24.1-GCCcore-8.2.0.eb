@@ -16,7 +16,7 @@ checksums = ['178c2728a4f37eae986eabdd758547cd7579d15000048596fa6bbc25cbba5c90']
 
 builddependencies = [
     ('binutils', '2.31.1'),
-    ('pkg-config','0.29.2')
+    ('pkg-config', '0.29.2')
 ]
 
 dependencies = [
