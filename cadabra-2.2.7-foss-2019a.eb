@@ -26,7 +26,7 @@ dependencies = [
     ('matplotlib', '3.0.3', versionsuffix),
     ('sympy', '1.4'),
     ('git', '2.21.0'),
-    ('gtkmm', '3.24.1'),
+    ('gtkmm', '3.22.3'),
     ('SQLite', '3.27.2'),
 ]
 
