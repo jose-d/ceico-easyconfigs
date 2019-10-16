@@ -1,6 +1,6 @@
 easyblock = 'ConfigureMake'
 
-name = 'Gtkmm'
+name = 'gtkmm'
 version = '3.22.3'
 
 homepage = 'https://developer.gnome.org/gtk+/stable/'
