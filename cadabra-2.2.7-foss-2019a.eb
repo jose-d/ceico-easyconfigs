@@ -31,7 +31,8 @@ dependencies = [
 ]
 
 osdependencies = [
-    ('texlive')
+    ('texlive'),
+    ('texlive-dvipng'),
 ]
 
 sanity_check_paths = {
