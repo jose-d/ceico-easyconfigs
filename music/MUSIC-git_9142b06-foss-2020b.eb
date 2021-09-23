@@ -25,7 +25,7 @@ dependencies = [
 
 checksums = [None]
 
-patches = [ 'MUSIC-gitmaster.patch' ]
+patches = [ 'MUSIC.patch' ]
 
 unpack_options = '--strip-components=1'
 
