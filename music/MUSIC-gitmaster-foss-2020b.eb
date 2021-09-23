@@ -1,0 +1,47 @@
+easyblock = 'ConfigureMake'
+
+name = 'music'
+version = '9142b06'
+homepage = 'https://bitbucket.org/%(bitbucket_account)s/%(namelower)s/'
+description = """MUSIC is a computer program to generate nested grid initial conditions for high-resolution "zoom" cosmological simulations."""
+
+bitbucket_account = 'ohahn'
+toolchain = {'name': 'foss', 'version': '2020b'}
+
+sources = [{
+    'filename': 'music-master.tar.gz',
+    'git_config': {
+        'url': 'https://bitbucket.org/ohahn',
+        'repo_name': 'music',
+        'commit': '9142b06'
+    },
+}]
+
+dependencies = [
+  ('HDF5', '1.10.7'), 
+  ('GSL', '2.6'),
+  ('libtirpc','1.3.1')
+]
+
+checksums = [None]
+
+patches = [ 'MUSIC-gitmaster.patch' ]
+
+unpack_options = '--strip-components=1'
+
+buildininstalldir = True
+
+parallel = 1
+
+sanity_check_paths = {
+    'files': ["MUSIC"],
+    'dirs': [],
+}
+
+modextrapaths = {
+    'PATH': '.',
+}
+
+skipsteps = ['configure', 'install']
+
+moduleclass = 'astro'

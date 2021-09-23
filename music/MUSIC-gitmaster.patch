@@ -1,0 +1,15 @@
+diff -Nru ./music_orig/Makefile ./music/Makefile
+--- ./music_orig/Makefile       2021-09-23 14:33:23.731754000 +0200
++++ ./music/Makefile    2021-09-23 14:34:06.640266000 +0200
+@@ -12,9 +12,8 @@
+ CC      = g++
+ OPT     = -Wall -Wno-unknown-pragmas -O3 -g -mtune=native
+ CFLAGS  =  
+-LFLAGS  = -lgsl -lgslcblas 
+-CPATHS  = -I./src -I$(HOME)/local/include -I/opt/local/include -I/usr/local/include
+-LPATHS  = -L$(HOME)/local/lib -L/opt/local/lib -L/usr/local/lib
++LFLAGS  = -lgsl -lgslcblas -ltirpc
++CPATHS  = -I./src
+ 
+ ##############################################################################
+ # if you have FFTW 2.1.5 or 3.x with multi-thread support, you can enable the
