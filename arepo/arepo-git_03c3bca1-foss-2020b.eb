@@ -1,0 +1,48 @@
+easyblock = 'ConfigureMake'
+
+name = 'arepo'
+version = 'git_03c3bca1'
+homepage = 'https://gitlab.mpcdf.mpg.de/vrs/arepo'
+description = """REPO is a parallel moving-mesh code for hydrodynamical cosmological simulations. It is a flexible code that can be applied to a variety of different types of simulations, offering a variety of physics solvers and postprocessing algorithms."""
+
+toolchain = {'name': 'foss', 'version': '2020b'}
+
+sources = [{
+    'filename': 'arepo-master.tar.gz',
+    'git_config': {
+        'url': 'https://gitlab.mpcdf.mpg.de/vrs',
+        'repo_name': 'arepo',
+        'commit': '03c3bca1'
+    },
+}]
+
+dependencies = [
+  ('HDF5', '1.10.7'), 
+  ('GSL', '2.6'),
+  ('GMP', '6.2.0'),
+  ('h5py', '3.1.0'),
+  ('matplotlib', '3.3.3'),
+]
+
+checksums = [None]
+
+patches = [ 'arepo.diff' ]
+
+unpack_options = '--strip-components=1'
+
+buildininstalldir = True
+
+parallel = 1
+
+sanity_check_paths = {
+    'files': ["Arepo"],
+    'dirs': [],
+}
+
+modextrapaths = {
+    'PATH': '.',
+}
+
+skipsteps = ['configure', 'install']
+
+moduleclass = 'astro'
