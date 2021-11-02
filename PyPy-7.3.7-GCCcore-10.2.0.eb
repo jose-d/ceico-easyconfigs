@@ -1,0 +1,23 @@
+# TODO/FIXME:
+# PyPy is distributed as binary. It's not well matching existing versions of python vs GCC in any
+# easybuild toolchain/python set.
+# so despite the fact this easyconfig is working, it's not fitting well into our software env.
+
+easyblock = 'Tarball'
+
+name = 'PyPy'
+version = '7.3.7'
+
+homepage = 'https://www.pypy.org'
+description = """PyPy is a replacement for CPython. It is built using the RPython language that was co-developed with it.
+The main reason to use it instead of CPython is speed: it runs generally faster."""
+
+toolchain = SYSTEM
+
+source_urls = ['https://downloads.python.org/%(namelower)s']
+sources = ['%(namelower)s3.8-v%(version)s-linux64.tar.bz2']
+
+sanity_check_paths = {
+    'files': ['bin/pypy3'],
+    'dirs': ['bin', 'include', 'lib' ],
+}
